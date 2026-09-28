@@ -11,6 +11,9 @@
   <title>JINX — What survives us</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/site.css">
+  <link rel="stylesheet" href="./assets/book-fonts.css">
+  <link rel="stylesheet" href="./assets/book.css">
+  <link rel="stylesheet" href="./assets/moments.css">
   <script type="module" src="./assets/app.js"></script>
 </head>
 <body>
@@ -20,6 +23,7 @@
     <button class="menu-toggle" id="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">Menu <span aria-hidden="true">+</span></button>
     <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
       <a href="#story">The story</a>
+      <a href="#moments">Key moments</a>
       <a href="#chapters">Read</a>
       <a href="#universe">Universe</a>
       <a href="#characters">Characters</a>
@@ -54,6 +58,46 @@
       <div class="stat-strip"><div><strong>08<span>years</span></strong><p>The safe launch-planning window</p></div><div><strong>05<span>ships</span></strong><p>Independent attempts at a beginning</p></div><div><strong>5,000</strong><p>Dormant counterparts. No conscious crew.</p></div><div><strong>35<span>light-years</span></strong><p>The distance from Earth to REDO</p></div></div>
     </section>
 
+    <section class="moments-section" id="moments" aria-labelledby="moments-title">
+      <div class="section-shell section-space">
+        <div class="section-heading">
+          <div><p class="eyebrow"><span class="section-number">JX</span> Living fragments</p><h2 id="moments-title">Some moments<br>leave an afterimage.</h2></div>
+          <p class="section-aside">Six scenes from the archive.<br>Not a trailer. A place to linger.</p>
+        </div>
+        <p class="moments-advisory" id="moments-advisory">Stylized violence, blood spatters, and distant lightning. Sound is off unless you enable thunder. No strobe effects. Play a scene or explore it with the slider; plot reveals follow your spoiler setting.</p>
+        <div id="moments-experience" hidden>
+          <div class="moment-screen" id="moment-screen" role="group" aria-labelledby="moment-title" aria-describedby="moment-description moments-advisory">
+            <div class="moment-art" id="moment-art" aria-hidden="true"></div>
+            <div class="moment-blood-overlay" id="moment-blood-overlay" aria-hidden="true"></div>
+            <div class="moment-vignette" aria-hidden="true"></div>
+            <div class="moment-topline"><span id="moment-location"></span><span id="moment-record"></span></div>
+            <div class="moment-screen-copy"><p class="eyebrow" id="moment-kicker"></p><h3 id="moment-title"></h3><p id="moment-line"></p></div>
+            <div class="moment-readout" id="moment-readout"></div>
+            <div class="moment-lock" id="moment-lock" hidden><span class="tiny-label">An unopened record</span><p>This scene reveals a major story moment.</p><button class="button button-secondary" id="moment-reveal" type="button">Reveal plot spoilers</button></div>
+          </div>
+          <div class="moment-transport">
+            <button id="moment-play" class="moment-control" type="button" aria-pressed="false" aria-controls="moment-art">Play scene</button>
+            <button id="moment-replay" class="moment-control" type="button" aria-controls="moment-art">Replay</button>
+            <button id="moment-thunder" class="moment-control" type="button" aria-pressed="false" hidden>Enable thunder</button>
+            <label class="moment-scrubber"><span id="moment-progress-label">Scene progress</span><input id="moment-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Scene progress"><output id="moment-progress-output" for="moment-progress" aria-live="off">0%</output></label>
+            <span class="moment-motion-note" id="moment-motion-note"></span>
+          </div>
+          <p class="moment-audio-status" id="moment-audio-status" role="status"></p>
+          <div class="moment-selector" id="moment-selector" role="group" aria-label="Choose a story moment"></div>
+          <div class="moment-context">
+            <div><p class="tiny-label" id="moment-chapter"></p><p id="moment-description"></p><p class="moment-canon" id="moment-canon"></p></div>
+            <div class="moment-actions">
+              <button class="button button-secondary" type="button" id="moment-read">Read this chapter <span aria-hidden="true">↗</span></button>
+              <button class="text-link" type="button" id="moment-random" hidden>Focus another identity ↻</button>
+            </div>
+          </div>
+          <div class="moment-identities" id="moment-identities" role="group" aria-label="Explore Egon's twelve identities" hidden></div>
+          <p class="sr-only" id="moment-status" role="status" aria-live="polite"></p>
+        </div>
+        <noscript><p class="notice">Enable JavaScript to explore the animated scenes. The complete story remains available through the original chapter links above.</p></noscript>
+      </div>
+    </section>
+
     <section class="section-shell section-space" id="chapters" aria-labelledby="chapters-title">
       <div class="section-heading"><div><p class="eyebrow"><span class="section-number">02</span> The reading room</p><h2 id="chapters-title">Eight passages.<br>One impossible choice.</h2></div><div class="section-aside"><p>Read the complete, unabridged story.<br>Your place stays in this browser.</p><span id="reading-progress" class="tiny-label" aria-live="polite">0 / 8 chapters marked read</span><button type="button" class="text-link small" id="reset-progress" disabled>Reset reading progress</button></div></div>
       <p class="small muted">Plot spoilers are hidden in the archive by default. Opening a chapter shows its full text, including spoilers and any graphic content.</p>
@@ -80,7 +124,35 @@
           </div>
           <div class="fleet-panel"><div class="fleet-selector" id="fleet-selector" role="group" aria-label="Choose a ship"></div><div class="fleet-detail" id="fleet-detail" aria-live="polite"></div></div>
         </div>
-        <div class="world-notes"><div><span class="tiny-label">Destination / Zan</span><h3>Two moons.<br>A different sky.</h3><p>Agape and Ales move above the Hades Ocean. A local day lasts 36 hours.</p></div><div class="two-moons" aria-hidden="true"><span class="agape"></span><span class="ales"></span><span class="moon-orbit"></span></div><div><span class="tiny-label">Distance ≠ duration</span><p>35 light-years is a distance. The story's fictional metric-compression drive shortens the route to an approximately six-year journey. Bodies travel dormant; minds begin after arrival.</p></div></div>
+        <div class="world-notes"><div><span class="tiny-label">Destination / Zan · as seen in JINX</span><h3>Two moons in view.<br>A different sky.</h3><p>Agape and Ales are the two moons described in JINX above the Hades Ocean. A local day lasts 36 hours.</p></div><div class="two-moons" aria-hidden="true"><span class="agape"></span><span class="ales"></span><span class="moon-orbit"></span></div><div><span class="tiny-label">Distance ≠ duration</span><p>35 light-years is a distance. The story's fictional metric-compression drive shortens the route to an approximately six-year journey. Bodies travel dormant; minds begin after arrival.</p></div></div>
+        <aside class="redo-reference" aria-label="REDO world reference"><div><span class="tiny-label">Companion worldbuilding / external reference</span><p>There is more beyond this sky.</p><span class="small muted">Explore REDOVERSE for the wider REDO setting. JINX retains its timeline and 35-light-year distance; REDO Volume 1 reveals more about the sky after arrival and awakening.</span></div><a class="button button-secondary" href="https://unigalactix.github.io/REDOVERSE/" target="_blank" rel="noopener noreferrer">Explore REDOVERSE <span aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a></aside>
+        <aside class="redo-volume" aria-labelledby="redo-volume-title">
+          <header><p class="eyebrow">Beyond JINX / the story continues</p><h3 id="redo-volume-title">REDO Volume 1</h3><p class="small muted">A later revelation. The JINX story remains unchanged.</p></header>
+          <div id="redo-volume-teaser"><p>The settlers' understanding of Zan is not complete. Reveal the sequel details when you are ready.</p><button class="button button-secondary" id="redo-reveal" type="button" aria-controls="redo-volume-details">Reveal REDO sequel details <span aria-hidden="true">↗</span></button></div>
+          <div id="redo-volume-details" hidden>
+            <div class="redo-discovery">
+              <div class="redo-sky" aria-hidden="true">
+                <svg viewBox="0 0 440 270" focusable="false">
+                  <defs><radialGradient id="redo-sun-glow"><stop stop-color="#f7e8bc" stop-opacity=".35"/><stop offset="1" stop-color="#f7e8bc" stop-opacity="0"/></radialGradient><linearGradient id="redo-planet-light" x2="0" y2="1"><stop stop-color="#3c6565"/><stop offset="1" stop-color="#121d24"/></linearGradient></defs>
+                  <rect width="440" height="270" fill="#111c24"/>
+                  <g fill="#bacfbd" opacity=".55"><circle cx="40" cy="130" r="1"/><circle cx="150" cy="23" r="1"/><circle cx="310" cy="51" r="1.4"/><circle cx="414" cy="88" r="1"/><circle cx="252" cy="139" r="1"/><circle cx="97" cy="192" r="1.3"/></g>
+                  <circle cx="77" cy="67" r="52" fill="url(#redo-sun-glow)"/>
+                  <circle data-redo-sun="spica" cx="77" cy="67" r="22" fill="#e5e5d5"/>
+                  <circle data-redo-sun="antares" cx="132" cy="49" r="12" fill="#ce8167"/>
+                  <ellipse cx="260" cy="162" rx="168" ry="82" transform="rotate(-24 260 162)" fill="none" stroke="#74968a" stroke-opacity=".25"/>
+                  <circle data-redo-moon="agape" cx="203" cy="91" r="20" fill="#98a899"/>
+                  <circle data-redo-moon="ales" cx="281" cy="53" r="9" fill="#c1b7a1"/>
+                  <circle data-redo-moon="additional-1" cx="347" cy="101" r="14" fill="#7c9497"/>
+                  <circle data-redo-moon="additional-2" cx="385" cy="160" r="7" fill="#a7a18c"/>
+                  <circle cx="249" cy="369" r="188" fill="url(#redo-planet-light)" stroke="#7e9c8c" stroke-opacity=".5"/>
+                  <text x="22" y="247" fill="#b8c9b6" font-family="Consolas,monospace" font-size="9" letter-spacing="1.4">AFTER ARRIVAL / AFTER AWAKENING</text>
+                </svg>
+              </div>
+              <div><p class="tiny-label">The fuller sky / REDO revelation</p><h3 id="redo-discovery-title" tabindex="-1">Four moons.<br>Two suns.</h3><p>After landing on Zan and fully awakening into consciousness, the settlers discover that the planet has <strong>four moons, not just two</strong>, and <strong>two suns</strong>.</p><p class="small muted">Agape and Ales remain the moons described in JINX. The fuller discovery is revealed in REDO Volume 1, without changing JINX's events or its existing text.</p></div>
+            </div>
+            <div class="redo-parts"><article><span class="tiny-label">Volume 1 / Part 1</span><h4>Rage of Rak</h4></article><article><span class="tiny-label">Volume 1 / Part 2</span><h4>Wrath of God (Theo)</h4></article></div>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -113,16 +185,23 @@
   <footer class="site-footer section-shell"><a class="wordmark" href="#home">JINX<span class="brand-dot"></span></a><p>A dark science-fiction story.<br>California → REDO. 2165–2180.</p><a href="./SOT.md" download>Download the story reference <span class="small">(full spoilers)</span> <span aria-hidden="true">↗</span></a><a href="#home" class="back-top" aria-label="Back to top">↑</a></footer>
 
   <dialog id="reader" class="reader" aria-labelledby="reader-title" aria-describedby="reader-advisory">
-    <header class="reader-header"><div><span class="tiny-label" id="reader-number">Reading room</span><h2 id="reader-title">JINX</h2></div><button class="icon-button" id="close-reader" type="button" aria-label="Close chapter reader">✕</button></header>
-    <div class="reader-toolbar"><label>Chapter <select id="reader-chapter"></select></label><div class="reader-text-controls" role="group" aria-label="Reading text size"><button type="button" id="smaller-text" aria-label="Decrease text size">A−</button><button type="button" id="larger-text" aria-label="Increase text size">A+</button></div><a id="chapter-source" href="./Story/00%20-%20Prologue/Prologue.txt" target="_blank" rel="noopener">Original text ↗</a></div>
-    <div class="reader-scroll" id="reader-scroll" tabindex="0" aria-label="Chapter text">
-      <p class="reader-advisory" id="reader-advisory">Unabridged text · Contains story spoilers. Graphic violence, blood, mass death, and grief appear in this story.</p>
-      <p class="reader-meta" id="reader-meta"></p>
-      <div id="reader-state" role="status"></div>
-      <article class="reader-content" id="reader-content"></article>
-      <button class="button button-secondary" id="mark-read" type="button" disabled>Mark chapter read</button>
+    <header class="reader-header"><div><span class="tiny-label" id="reader-number">The book / JINX</span><h2 id="reader-title">A Rajesh Kodaganti's Migration</h2></div><button class="icon-button" id="close-reader" type="button" aria-label="Close book">✕</button></header>
+    <div class="reader-toolbar">
+      <label><span id="book-language-label">Language</span><select id="book-language" aria-label="Book language"><option value="en" lang="en">English</option><option value="te" lang="te">తెలుగు</option><option value="hi" lang="hi">हिन्दी</option><option value="es" lang="es">Español</option></select></label>
+      <label class="book-chapter-label"><span id="book-chapter-label">Chapter</span><select id="reader-chapter"></select></label>
+      <div class="reader-text-controls" role="group" aria-label="Reading text size"><button type="button" id="smaller-text" aria-label="Decrease text size">A−</button><button type="button" id="larger-text" aria-label="Increase text size">A+</button></div>
+      <div class="book-downloads" role="group" aria-label="Download complete book"><a id="download-epub" href="./assets/books/jinx-en.epub" download>EPUB ↓</a><a id="download-pdf" href="./assets/books/jinx-en.pdf" download>PDF ↓</a></div>
     </div>
-    <footer class="reader-footer"><button class="text-link" id="previous-chapter" type="button">← Previous</button><span id="reader-position" class="tiny-label"></span><button class="text-link" id="next-chapter" type="button">Next →</button></footer>
+    <p class="reader-advisory" id="reader-advisory">Unabridged story · Spoilers, graphic violence, blood, mass death, and grief.</p>
+    <div id="reader-state" role="status" aria-live="polite"></div>
+    <div class="book-stage" id="book-stage">
+      <div class="book" id="book" tabindex="0" role="group" aria-label="Book. Use the arrow keys or swipe to turn pages." aria-busy="false">
+        <article class="book-page" id="book-page"></article>
+        <div class="book-page book-measure" id="book-measure" aria-hidden="true" inert></div>
+      </div>
+    </div>
+    <div class="book-reading-tools"><button class="text-link" id="book-cover" type="button">Back to cover</button><button class="text-link" id="mark-read" type="button" disabled>Mark chapter read</button><a id="chapter-source" href="./Story/00%20-%20Prologue/Prologue.txt" target="_blank" rel="noopener">English source ↗</a></div>
+    <footer class="reader-footer"><button class="text-link" id="previous-page" type="button" disabled>← Previous page</button><span id="reader-position" class="tiny-label" role="status" aria-live="polite"></span><button class="text-link" id="next-page" type="button" disabled>Open book →</button></footer>
   </dialog>
 </body>
 </html>

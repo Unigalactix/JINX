@@ -6,8 +6,17 @@
   "description": "A no-build, single-page interactive archive for JINX.",
   "scripts": {
     "dev": "node tools/serve.mjs",
-    "test": "node --test tests/site.test.mjs",
-    "check": "node --check assets/app.js && node --check assets/content.js && node --check tools/serve.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "build:books": "node tools/build-books.mjs",
+    "check": "node --check assets/app.js && node --check assets/content.js && node --check assets/book-reader.js && node --check assets/moments.js && node --check tools/serve.mjs && node --check tools/build-books.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/noto-sans-devanagari": "5.3.0",
+    "@fontsource/noto-sans-telugu": "5.3.0",
+    "@fontsource/noto-serif": "5.3.0",
+    "fflate": "0.8.3",
+    "pdf-lib": "1.17.1",
+    "playwright": "1.63.0"
   },
   "engines": {
     "node": ">=20"

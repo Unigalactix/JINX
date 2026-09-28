@@ -1,8 +1,9 @@
-import { chapters, characters, groups, identities, fleet, timeline, parseCharts, parseChapter, initialProgress, validProgress } from "./content.js";
+import { chapters, characters, groups, identities, fleet, timeline, parseCharts, initialProgress, validProgress } from "./content.js";
+import { createBookReader } from "./book-reader.js";
+import { setupMoments } from "./moments.js";
 
 const $ = (selector) => document.querySelector(selector);
 const storageKey = "jinx-reading-v1";
-const cache = new Map();
 let spoilers = false;
 let selectedCharacter = "egon";
 let characterGroup = "all";
@@ -12,13 +13,7 @@ let chartFamily = "emotions";
 let chartMetric = 0;
 let chartChapter = 0;
 let chartData = null;
-let readerIndex = 0;
-let readerLoaded = false;
-let readerRequest = null;
-let progressTimer = null;
-let readingSize = 19;
 let storageAvailable = true;
-let returnFocus = null;
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -73,10 +68,6 @@ function persistProgress() {
   catch (error) { storageFailure(error); }
 }
 
-function chapterURL(chapter) {
-  return new URL(chapter.path, document.baseURI);
-}
-
 function renderProgress() {
   $("#reading-progress").textContent = `${progress.read.length} / ${chapters.length} chapters marked read`;
   for (const button of document.querySelectorAll(".chapter-card")) {
@@ -92,12 +83,11 @@ function renderProgress() {
   );
   $("#begin-reading span").setAttribute("aria-hidden", "true");
   $("#reset-progress").disabled = progress.last === null && progress.read.length === 0;
-  $("#mark-read").textContent = progress.read.includes(chapters[readerIndex].id) ? "Chapter marked read ✓" : "Mark chapter read";
+  bookReader.refreshProgress();
 }
 
 function renderChapters() {
   const fragment = document.createDocumentFragment();
-  const options = document.createDocumentFragment();
   chapters.forEach((chapter, index) => {
     const button = element("button", "chapter-card");
     button.type = "button";
@@ -108,12 +98,8 @@ function renderChapters() {
     button.append(arrow, element("h3", "", chapter.title), element("p", "", chapter.teaser), element("span", "chapter-period", chapter.period));
     button.addEventListener("click", () => openChapter(index));
     fragment.append(button);
-    const option = element("option", "", `${chapter.number} · ${chapter.title}`);
-    option.value = String(index);
-    options.append(option);
   });
   $("#chapter-grid").replaceChildren(fragment);
-  $("#reader-chapter").replaceChildren(options);
   $("#begin-reading").disabled = false;
   $("#closing-read").disabled = false;
   renderProgress();
@@ -360,122 +346,32 @@ function updateSignalDetail() {
   $("#signal-detail").replaceChildren(element("span", "tiny-label", data.metrics[chartMetric]), element("h3", "", row.chapter.title), score, element("p", "", description), read);
 }
 
-function saveReaderPosition() {
-  if (!readerLoaded || !$("#reader").open) return;
-  const scroll = $("#reader-scroll");
-  const maximum = scroll.scrollHeight - scroll.clientHeight;
-  progress.positions[chapters[readerIndex].id] = maximum > 0 ? Math.min(1, Math.max(0, scroll.scrollTop / maximum)) : 0;
-  persistProgress();
-}
-
-async function openChapter(index) {
-  if (!Number.isInteger(index) || index < 0 || index >= chapters.length) throw new RangeError("Invalid chapter index.");
-  saveReaderPosition();
-  clearTimeout(progressTimer);
-  readerLoaded = false;
-  readerRequest?.abort();
-  const controller = new AbortController();
-  readerRequest = controller;
-  readerIndex = index;
-  const chapter = chapters[index];
-  const dialog = $("#reader");
-  const firstOpen = !dialog.open;
-  if (firstOpen) {
-    returnFocus = document.activeElement;
-    dialog.showModal();
-    document.body.classList.add("reader-open");
-    $("#close-reader").focus();
-  }
-  $("#reader-title").textContent = chapter.title;
-  $("#reader-number").textContent = `${chapter.number} / ${chapter.subtitle}`;
-  $("#reader-position").textContent = `${index + 1} / ${chapters.length}`;
-  $("#reader-chapter").value = String(index);
-  $("#reader-meta").textContent = chapter.period;
-  $("#chapter-source").href = chapterURL(chapter).href;
-  $("#previous-chapter").disabled = index === 0;
-  $("#next-chapter").disabled = index === chapters.length - 1;
-  $("#mark-read").disabled = true;
-  $("#reader-content").replaceChildren();
-  $("#reader-state").textContent = "Loading chapter…";
-  $("#reader-scroll").scrollTop = 0;
-  try {
-    let parsed = cache.get(chapter.id);
-    if (!parsed) {
-      const text = await getText(chapterURL(chapter), controller.signal);
-      parsed = parseChapter(text, chapter);
-      cache.set(chapter.id, parsed);
-    }
-    if (controller.signal.aborted || !dialog.open) return;
-    const fragment = document.createDocumentFragment();
-    parsed.blocks.forEach((block) => {
-      if (block.kind === "break") fragment.append(element("hr"));
-      else fragment.append(element("p", block.kind === "context" ? "source-context" : "", block.text));
-    });
-    $("#reader-content").replaceChildren(fragment);
-    $("#reader-state").textContent = "";
-    $("#reader-meta").textContent = `${chapter.period} · ${parsed.words.toLocaleString()} words · about ${Math.ceil(parsed.words / 220)} min`;
-    $("#mark-read").disabled = false;
-    progress.last = chapter.id;
+const bookReader = createBookReader({
+  getProgress: () => progress,
+  onError: notice,
+  onPosition(index, ratio) {
+    const id = chapters[index].id;
+    progress.last = id;
+    progress.positions[id] = ratio;
     persistProgress();
     renderProgress();
-    requestAnimationFrame(() => {
-      if (controller.signal.aborted || !dialog.open) return;
-      const scroll = $("#reader-scroll");
-      scroll.scrollTop = (progress.positions[chapter.id] ?? 0) * Math.max(0, scroll.scrollHeight - scroll.clientHeight);
-      readerLoaded = true;
-    });
-  } catch (error) {
-    if (controller.signal.aborted) return;
-    console.error(`Could not load ${chapter.title}:`, error);
-    showError($("#reader-state"), `This chapter could not be opened. ${error.message} Use “Try again” or the original-text link above.`, () => openChapter(index));
-  }
-}
-
-function closeReader() {
-  saveReaderPosition();
-  clearTimeout(progressTimer);
-  readerRequest?.abort();
-  readerLoaded = false;
-  $("#reader").close();
-}
-
-$("#close-reader").addEventListener("click", closeReader);
-$("#reader").addEventListener("cancel", (event) => { event.preventDefault(); closeReader(); });
-$("#reader").addEventListener("keydown", (event) => {
-  if (event.key !== "Escape") return;
-  event.preventDefault();
-  event.stopPropagation();
-  closeReader();
-});
-$("#reader").addEventListener("close", () => {
-  document.body.classList.remove("reader-open");
-  if (returnFocus instanceof HTMLElement && returnFocus.isConnected && !returnFocus.hasAttribute("disabled")) returnFocus.focus();
-});
-$("#reader-chapter").addEventListener("change", (event) => openChapter(Number(event.target.value)));
-$("#previous-chapter").addEventListener("click", () => openChapter(readerIndex - 1));
-$("#next-chapter").addEventListener("click", () => openChapter(readerIndex + 1));
-$("#reader-scroll").addEventListener("scroll", () => {
-  if (!readerLoaded) return;
-  clearTimeout(progressTimer);
-  progressTimer = setTimeout(saveReaderPosition, 200);
-}, { passive: true });
-window.addEventListener("pagehide", saveReaderPosition);
-$("#mark-read").addEventListener("click", () => {
-  if (!readerLoaded) return;
-  const id = chapters[readerIndex].id;
-  if (!progress.read.includes(id)) progress.read.push(id);
-  persistProgress();
-  renderProgress();
+  },
+  onMarkRead(index) {
+    const id = chapters[index].id;
+    if (!progress.read.includes(id)) progress.read.push(id);
+    persistProgress();
+    renderProgress();
+  },
 });
 
-function setReadingSize(size) {
-  readingSize = Math.min(27, Math.max(16, size));
-  $("#reader-content").style.setProperty("--reading-size", `${readingSize}px`);
-  $("#smaller-text").disabled = readingSize === 16;
-  $("#larger-text").disabled = readingSize === 27;
+function openChapter(index) {
+  bookReader.open({ chapterIndex: index, cover: false });
 }
-$("#smaller-text").addEventListener("click", () => setReadingSize(readingSize - 1));
-$("#larger-text").addEventListener("click", () => setReadingSize(readingSize + 1));
+
+const momentsExperience = setupMoments({
+  openChapter,
+  revealSpoilers: () => setSpoilers(true),
+});
 
 function closeMenu() {
   $("#site-header").classList.remove("menu-open");
@@ -489,13 +385,22 @@ $("#primary-nav").addEventListener("click", (event) => { if (event.target.closes
 document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMenu(); });
 window.matchMedia("(min-width: 901px)").addEventListener("change", closeMenu);
 
-$("#spoiler-toggle").addEventListener("change", (event) => {
-  spoilers = event.target.checked;
+function setSpoilers(value) {
+  spoilers = value;
+  $("#spoiler-toggle").checked = value;
   $("#spoiler-label").textContent = spoilers ? "on" : "off";
   updateFleet();
   renderCharacters();
   updateTimeline();
   updateSignalDetail();
+  momentsExperience.setSpoilers(spoilers);
+  $("#redo-volume-details").hidden = !spoilers;
+  $("#redo-volume-teaser").hidden = spoilers;
+}
+$("#spoiler-toggle").addEventListener("change", (event) => setSpoilers(event.target.checked));
+$("#redo-reveal").addEventListener("click", () => {
+  setSpoilers(true);
+  $("#redo-discovery-title").focus({ preventScroll: true });
 });
 for (const button of document.querySelectorAll("[data-chart-family]")) {
   button.addEventListener("click", () => { chartFamily = button.dataset.chartFamily; chartMetric = 0; updateChartMetrics(); });
@@ -503,9 +408,9 @@ for (const button of document.querySelectorAll("[data-chart-family]")) {
 $("#chart-metric").addEventListener("change", (event) => { chartMetric = Number(event.target.value); renderChart(); });
 $("#begin-reading").addEventListener("click", () => {
   const index = chapters.findIndex((chapter) => chapter.id === progress.last);
-  openChapter(index < 0 ? 0 : index);
+  bookReader.open({ chapterIndex: index < 0 ? 0 : index, cover: true });
 });
-$("#closing-read").addEventListener("click", () => openChapter(0));
+$("#closing-read").addEventListener("click", () => bookReader.open({ cover: true }));
 $("#reset-progress").addEventListener("click", () => {
   progress = initialProgress();
   persistProgress();

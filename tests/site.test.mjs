@@ -82,13 +82,27 @@ test("static entrypoint uses relative assets and provides a no-JavaScript readin
   await readFile(new URL(".nojekyll", root));
 });
 
+test("book cover includes the requested title and a matching portrait PNG", async () => {
+  const svg = await readFile(new URL("assets/jinx-book-cover.svg", root), "utf8");
+  assert.match(svg, /<title[^>]*>JINX - A Rajesh Kodaganti's Migration<\/title>/);
+  assert.match(svg, /viewBox="0 0 1600 2400"/);
+  assert.match(svg, />JINX<\/text>/);
+  assert.match(svg, />A Rajesh Kodaganti's<\/text>/);
+  assert.match(svg, />Migration<\/text>/);
+  assert.doesNotMatch(svg, /(?:href|src)="(?:https?:|\/\/)/);
+  const png = await readFile(new URL("assets/jinx-book-cover.png", root));
+  assert.deepEqual(png.subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  assert.equal(png.readUInt32BE(16), 1600);
+  assert.equal(png.readUInt32BE(20), 2400);
+});
+
 test("preview serves the site under a GitHub Pages-style project path", async (t) => {
   const server = createPreviewServer("/JINX/");
   server.listen(0, "127.0.0.1");
   await once(server, "listening");
   t.after(() => new Promise((resolve) => { server.close(resolve); server.closeAllConnections(); }));
   const origin = `http://127.0.0.1:${server.address().port}`;
-  for (const path of ["", "assets/app.js", "assets/content.js", "assets/site.css", "assets/favicon.svg", "SOT.md", ...chapters.map(({ path }) => path)]) {
+  for (const path of ["", "assets/app.js", "assets/content.js", "assets/site.css", "assets/favicon.svg", "assets/jinx-book-cover.svg", "SOT.md", ...chapters.map(({ path }) => path)]) {
     const response = await fetch(`${origin}/JINX/${encodeURI(path)}`);
     assert.equal(response.status, 200, path);
     assert.ok((await response.text()).length > 0, path);
@@ -97,6 +111,10 @@ test("preview serves the site under a GitHub Pages-style project path", async (t
   const module = await fetch(`${origin}/JINX/assets/app.js`);
   assert.match(module.headers.get("content-type"), /javascript/);
   await module.text();
+  const cover = await fetch(`${origin}/JINX/assets/jinx-book-cover.png`);
+  assert.equal(cover.status, 200);
+  assert.equal(cover.headers.get("content-type"), "image/png");
+  assert.deepEqual(Buffer.from(await cover.arrayBuffer()), await readFile(new URL("assets/jinx-book-cover.png", root)));
   for (const path of ["/assets/app.js", "/JINX/missing.txt", "/JINX/.git/config", "/JINX/package.json"]) {
     const response = await fetch(origin + path);
     assert.equal(response.status, 404, path);

@@ -4,7 +4,7 @@
 
 > **SPOILER WARNING:** This reference includes character identities, deaths, major reveals, and the ending.
 
-**Status:** Tracks the eight completed story files under [Story](Story), including the latest timeline, dormant-clone, Earth-survival, two-moon, and sequel updates.
+**Status:** Tracks the eight completed story files under [Story](Story), including the timeline, dormant-clone and Earth-survival rules, JINX's two-moon depiction, and the later REDO Volume 1 revelation. The narrative files remain unchanged.
 
 **Epilogue tracking:** Updated against the completed "Two Cradles" epilogue. Written events are distinguished from future-story setup.
 
@@ -73,7 +73,8 @@
 - REDO is 35 light-years from Earth. This is a distance, not a 35-year voyage.
 - Speculative metric-compression propulsion permits an approximately six-year voyage within the requested timeline.
 - Zan is the principal settlement planet; its immense ocean is Hades.
-- Zan has exactly TWO moons: Agape and Ales.
+- JINX describes TWO moons: Agape and Ales. Preserve that depiction and the existing narrative text.
+- **Later revelation, REDO Volume 1:** After landing on Zan and fully awakening into consciousness, the settlers discover FOUR moons, not just two, and TWO suns. This extends what is known about Zan without changing JINX's events. The two additional moons are not named in this update.
 - The epilogue describes the system's white primary Spica and distant red companion Antares.
 - These are the fictional REDO survey names, not the distant Earth-sky stars whose names were borrowed.
 - Casa, Judo, and Flack are other worlds known through surveys.
@@ -81,7 +82,7 @@
 
 **Reference:** <https://unigalactix.github.io/REDOVERSE/>
 
-**Continuity rule:** The user's explicit story requirements govern this draft. External lore does not override the 2165-2180 timeline, 35-light-year distance, two moons, or Rak/Theo sequel setup.
+**Continuity rule:** The user's explicit story requirements govern this draft. External lore does not override the 2165-2180 timeline, 35-light-year distance, or Rak/Theo parentage. Preserve JINX's two-moon depiction while distinguishing the author-approved later four-moon, two-sun revelation in REDO Volume 1. Do not rewrite the existing chapters to insert it.
 
 ## 2. ORIGINAL PROLOGUE AND BLOOD-RAIN INTENT
 
@@ -778,6 +779,17 @@ All scenes below are written. Their later consequences are sequel setup, not com
 
 ## 12. SEQUEL SETUP: RAK AND THEO
 
+### REDO Volume 1: later revelation and parts
+
+- **Part 1 - Rage of Rak**
+- **Part 2 - Wrath of God (Theo)**
+- After landing on Zan and fully awakening into consciousness, the settlers discover that Zan has **four moons, not just two, and two suns**.
+- This discovery is revealed in REDO Volume 1. It is a later expansion of the settlers' understanding, not a revision of JINX's existing story or its events.
+- Agape and Ales remain the two moons described in JINX. No names or discovery mechanism are specified here for the additional moons.
+- The existing descriptions of Spica and Antares remain unchanged. The later revelation does not remove those earlier descriptions.
+- The exact discovery date and the parts' full plots are not specified by this update. Do not invent them or treat the titles as proof that an adult conflict already occurs in JINX.
+- Preserve all eight JINX chapter files, translations, and existing book editions. The website presents this separately as spoiler-gated sequel information.
+
 ### Different families
 
 - Rak Reyes-Ortiz: Mateo Reyes and Leena Ortiz.
@@ -813,7 +825,7 @@ All scenes below are written. Their later consequences are sequel setup, not com
 - No conscious clone crew operates the interstellar ships.
 - Do not give fleet clones memories of a voyage they never experienced.
 - Preserve destination-only consciousness activation; explain Aster as the earlier accidental ancient-Earth case.
-- Use 35 light-years for REDO's distance and exactly two moons for Zan.
+- Use 35 light-years for REDO's distance. Preserve the two moons shown in JINX; reserve the fuller four-moon, two-sun revelation after arrival and awakening for REDO Volume 1.
 - Keep the five-ship total at 5,000 dormant clones.
 - Keep Egon's identities at 12, including Egon, separate from physical counterparts.
 - Preserve the 10,000 dead in the prologue and the clean blade at sunset.
@@ -836,7 +848,7 @@ All scenes below are written. Their later consequences are sequel setup, not com
 
 **Review date:** September 28, 2026 (editorial date, not a story event).
 
-**Scope:** All eight narrative files and this reference. The review distinguishes contradictory claims from gaps that needed a clearer causal link. The following fixes are applied; they do not change the title, original-human/clone distinction, two moons, 35-light-year distance, massacre, or Rak/Theo parentage.
+**Scope:** All eight narrative files and this reference. The review distinguishes contradictory claims from gaps that needed a clearer causal link. The following fixes preserve the title, original-human/clone distinction, JINX's two-moon depiction, 35-light-year distance, massacre, and Rak/Theo parentage. The later author-approved four-moon, two-sun reveal is recorded separately in Section 12 and does not alter these chapters.
 
 ### Findings and fixes
 

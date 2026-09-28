@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2400" viewBox="0 0 1600 2400" role="img" aria-labelledby="cover-title cover-description">
+  <title id="cover-title">JINX - A Rajesh Kodaganti's Migration</title>
+  <desc id="cover-description">A dark science-fiction book cover adapted from the JINX website hero. Oversized ivory lettering sits above a fractured, copper-lit moon, a fine orbital ellipse, sparse stars, and the curved horizon of a dying world. The subtitle reads A Rajesh Kodaganti's Migration.</desc>
+  <defs>
+    <radialGradient id="space" cx="73%" cy="49%" r="65%">
+      <stop stop-color="#1b2523"/>
+      <stop offset=".56" stop-color="#101719"/>
+      <stop offset="1" stop-color="#101315"/>
+    </radialGradient>
+    <radialGradient id="moon-light" cx="32%" cy="26%" r="76%">
+      <stop stop-color="#a99d85"/>
+      <stop offset=".2" stop-color="#726c5d"/>
+      <stop offset=".49" stop-color="#444940"/>
+      <stop offset=".77" stop-color="#202a28"/>
+      <stop offset="1" stop-color="#101817"/>
+    </radialGradient>
+    <linearGradient id="moon-shadow" x1="0" y1=".25" x2="1" y2=".6" gradientUnits="objectBoundingBox">
+      <stop offset=".08" stop-color="#101315" stop-opacity="0"/>
+      <stop offset=".3" stop-color="#101315" stop-opacity=".12"/>
+      <stop offset=".76" stop-color="#101315" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#101315" stop-opacity=".94"/>
+    </linearGradient>
+    <radialGradient id="moon-rim" cx="25%" cy="20%" r="85%">
+      <stop stop-color="#dcd8bc" stop-opacity=".65"/>
+      <stop offset=".6" stop-color="#b8c9b6" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#101315" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="horizon-light" cx="52%" cy="0" r="75%">
+      <stop stop-color="#614335"/>
+      <stop offset=".14" stop-color="#292a29"/>
+      <stop offset=".52" stop-color="#151a1c"/>
+      <stop offset="1" stop-color="#101315"/>
+    </radialGradient>
+    <linearGradient id="lower-shade" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#101315" stop-opacity="0"/>
+      <stop offset=".72" stop-color="#101315" stop-opacity=".88"/>
+      <stop offset="1" stop-color="#101315"/>
+    </linearGradient>
+    <filter id="halo" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="48"/>
+    </filter>
+    <filter id="crack-glow" x="-50%" y="-20%" width="200%" height="140%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="soften">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <clipPath id="moon-disc">
+      <circle cx="970" cy="1190" r="482"/>
+    </clipPath>
+    <path id="fracture" d="M854 696 889 863 850 982 928 1116 875 1183 945 1362 887 1511 927 1690 907 1690 867 1511 919 1362 849 1183 901 1116 824 982 863 863 828 696Z"/>
+    <path id="world-edge" d="M-220 2140C230 1760 1020 1565 1820 1570L1820 2620H-220Z"/>
+  </defs>
+
+  <path fill="url(#space)" d="M0 0h1600v2400H0z"/>
+  <g fill="#ede9df">
+    <circle cx="1400" cy="300" r="2" opacity=".45"/>
+    <circle cx="1290" cy="654" r="2.3" opacity=".7"/>
+    <circle cx="266" cy="809" r="1.5" opacity=".6"/>
+    <circle cx="506" cy="700" r="1.4" opacity=".45"/>
+    <circle cx="1470" cy="907" r="1.5" opacity=".5"/>
+    <circle cx="185" cy="1271" r="2" opacity=".55"/>
+    <circle cx="371" cy="1460" r="1.7" opacity=".5"/>
+    <circle cx="1380" cy="1490" r="1.6" opacity=".65"/>
+    <circle cx="197" cy="1657" r="1.3" opacity=".4"/>
+  </g>
+  <g fill="#b8c9b6" opacity=".55">
+    <circle cx="680" cy="790" r="1.8"/>
+    <circle cx="400" cy="1080" r="1.8"/>
+    <circle cx="1510" cy="1330" r="1.5"/>
+    <circle cx="98" cy="978" r="1.3"/>
+    <circle cx="541" cy="1600" r="1.4"/>
+  </g>
+
+  <circle cx="964" cy="1180" r="494" fill="#af4420" opacity=".09" filter="url(#halo)"/>
+  <g transform="rotate(-18 970 1190)">
+    <circle cx="970" cy="1190" r="482" fill="url(#moon-light)"/>
+    <g clip-path="url(#moon-disc)">
+      <g fill="none" stroke="#0b1212" opacity=".17" filter="url(#soften)">
+        <ellipse cx="777" cy="940" rx="39" ry="35" stroke-width="7"/>
+        <ellipse cx="777" cy="940" rx="88" ry="80" stroke-width="9"/>
+        <ellipse cx="777" cy="940" rx="142" ry="129" stroke-width="10"/>
+        <ellipse cx="777" cy="940" rx="198" ry="180" stroke-width="12"/>
+        <ellipse cx="777" cy="940" rx="253" ry="232" stroke-width="11"/>
+        <ellipse cx="777" cy="940" rx="310" ry="286" stroke-width="13"/>
+        <ellipse cx="777" cy="940" rx="372" ry="345" stroke-width="12"/>
+        <ellipse cx="777" cy="940" rx="433" ry="401" stroke-width="14"/>
+        <ellipse cx="777" cy="940" rx="492" ry="455" stroke-width="13"/>
+        <ellipse cx="777" cy="940" rx="552" ry="510" stroke-width="15"/>
+        <ellipse cx="777" cy="940" rx="614" ry="566" stroke-width="13"/>
+        <ellipse cx="777" cy="940" rx="675" ry="622" stroke-width="15"/>
+      </g>
+      <g fill="#0e1618" filter="url(#soften)">
+        <ellipse cx="1163" cy="942" rx="85" ry="79" opacity=".26"/>
+        <ellipse cx="892" cy="1335" rx="100" ry="108" opacity=".38"/>
+        <ellipse cx="672" cy="1094" rx="34" ry="43" opacity=".13"/>
+      </g>
+      <use href="#fracture" fill="#d65939" opacity=".8" filter="url(#crack-glow)"/>
+      <use href="#fracture" fill="#e47c57" opacity=".82"/>
+      <circle cx="970" cy="1190" r="484" fill="url(#moon-shadow)"/>
+    </g>
+    <circle cx="970" cy="1190" r="480" fill="none" stroke="url(#moon-rim)" stroke-width="3"/>
+  </g>
+
+  <ellipse cx="933" cy="1370" rx="866" ry="290" transform="rotate(-29 933 1370)" fill="none" stroke="#778074" stroke-opacity=".23" stroke-width="1.5"/>
+  <use href="#world-edge" fill="none" stroke="#b76032" stroke-width="34" opacity=".18" filter="url(#halo)"/>
+  <use href="#world-edge" fill="url(#horizon-light)" stroke="#a9795b" stroke-opacity=".48" stroke-width="1.5"/>
+  <path fill="url(#lower-shade)" d="M0 1810h1600v590H0z"/>
+
+  <g font-family="'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="18" letter-spacing="3" fill="#a4aaa6">
+    <circle cx="128" cy="142" r="4" fill="#b8c9b6"/>
+    <text x="151" y="148">A SURVIVAL ARCHIVE</text>
+    <text x="1472" y="148" text-anchor="end">2165 / 2180</text>
+  </g>
+  <path d="M124 190H1476" stroke="#343c3b" stroke-width="1"/>
+  <text x="106" y="603" fill="#ede9df" font-family="'Segoe UI', Arial, sans-serif" font-size="460" font-weight="850" letter-spacing="-35" textLength="1220" lengthAdjust="spacingAndGlyphs">JINX</text>
+  <circle cx="1426" cy="575" r="40" fill="#df6954"/>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#ede9df">
+    <text x="128" y="1910" font-size="57">A Rajesh Kodaganti's</text>
+    <text x="120" y="2058" font-size="140" letter-spacing="-4">Migration</text>
+  </g>
+  <path d="M128 1807h76" stroke="#df6954" stroke-width="5"/>
+  <g font-family="'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="18" letter-spacing="2.5" fill="#a4aaa6">
+    <text x="128" y="2240">NOT A SECOND LIFE.</text>
+    <text x="128" y="2274">A DIFFERENT BEGINNING.</text>
+    <text x="1472" y="2274" text-anchor="end">ARCHIVE JX / 001</text>
+  </g>
+</svg>

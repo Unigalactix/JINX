@@ -1,0 +1,85 @@
+.reader {
+  width: min(1080px, calc(100% - 32px));
+  height: min(96svh, 1200px);
+  max-height: 96svh;
+  background: #171b1b;
+}
+.reader-header { padding: 14px 24px; }
+.reader-header h2 { font-size: 1.2rem; }
+.reader-toolbar { padding: 10px 24px; gap: 16px; flex-wrap: wrap; }
+.reader-toolbar select { max-width: 185px; }
+.reader-toolbar label { min-width: 0; }
+.reader-text-controls { margin-left: auto; }
+.book-downloads { display: flex; gap: 8px; }
+.book-downloads a { padding: 8px 10px; border: 1px solid var(--line); font: .7rem var(--mono); text-decoration: none; }
+.book-downloads a:hover { border-color: var(--sage); color: var(--sage); }
+.reader-advisory { margin: 10px 24px 0; font-size: .61rem; line-height: 1.5; }
+#reader-state:not(:empty) { margin: 8px 24px; font-size: .8rem; max-height: 25svh; overflow-y: auto; }
+#reader-state .error-message { margin: 0; padding: 10px; }
+.book-stage { flex: 1; min-height: 180px; padding: 18px 48px 14px; display: flex; justify-content: center; perspective: 1800px; overflow: hidden; }
+.book { position: relative; width: min(590px, 100%); height: 100%; outline-offset: 9px; touch-action: pan-y; --book-size: 18px; }
+.book::before, .book::after { content: ""; position: absolute; inset: 3px -4px -3px 4px; background: #bcb8a9; border-radius: 2px 5px 5px 2px; box-shadow: 2px 2px 0 #575b51; }
+.book::after { inset: 6px -7px -6px 7px; z-index: -1; background: #8c9082; box-shadow: 10px 12px 30px #0008; }
+.book-page { position: absolute; inset: 0; margin: 0; overflow: hidden; color: #252923; background: linear-gradient(90deg, #cec9b9, #efebdd 4%, #f4f0e5 12%, #f4f0e5 95%, #e8e3d6); border-radius: 2px 4px 4px 2px; box-shadow: inset 1px 0 2px #fff7; }
+.book-page.cover-page { background: #101315; }
+.book-cover-open { display: block; padding: 0; border: 0; width: 100%; height: 100%; background: #101315; }
+.book-cover-open img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.book-cover-open:focus-visible { outline-offset: -4px; }
+.book-running-title { position: absolute; left: 34px; right: 30px; top: 17px; color: #686e62; font: 10px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .08em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-bottom: 1px solid #c8c5b6; padding-bottom: 9px; }
+.book-page-text { position: absolute; inset: 57px 34px 43px 38px; overflow: hidden; font: var(--book-size)/1.65 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.book-page-text p { margin: 0 0 .8em; white-space: pre-wrap; }
+.book-page-text .source-context { font-size: .8em; color: #61685a; margin-bottom: 1.5em; }
+.book-page-text h3 { font: 1.6em/1.2 Georgia, "Times New Roman", serif; margin: 0 0 .85em; letter-spacing: -.025em; color: #353b30; }
+.book-page-text .book-chapter-subtitle { color: #61685a; font-size: .8em; margin-top: -.6em; margin-bottom: 1.4em; }
+.book-page-text hr { width: 42px; border: 0; border-top: 1px solid #818874; margin: 1.2em auto; }
+.book[lang="te"] .book-page-text, .book[lang="te"] .book-page-text h3 { font-family: "Jinx Telugu", sans-serif; line-height: 1.85; }
+.book[lang="hi"] .book-page-text, .book[lang="hi"] .book-page-text h3 { font-family: "Jinx Devanagari", sans-serif; line-height: 1.85; }
+.book-folio { position: absolute; bottom: 13px; right: 30px; left: 34px; display: flex; justify-content: space-between; color: #68705e; font: 10px/1.5 var(--mono); }
+.book-measure { visibility: hidden; pointer-events: none; }
+.book-leaf { position: absolute; inset: 0; transform-origin: left center; transform-style: preserve-3d; z-index: 3; pointer-events: none; }
+.book-leaf > .book-page { backface-visibility: hidden; }
+.book-leaf-back { position: absolute; inset: 0; backface-visibility: hidden; transform: rotateY(180deg); background: linear-gradient(90deg, #e2dccb, #f0ecdf 70%, #b4b2a2); box-shadow: -12px 0 24px #0002; }
+.book-leaf::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #0003, transparent 25%, #0001); pointer-events: none; }
+.book-reading-tools { display: flex; justify-content: center; align-items: center; gap: 24px; padding: 2px 24px; flex-shrink: 0; }
+.book-reading-tools .text-link, .book-reading-tools a { font-size: .66rem; }
+.book-reading-tools #mark-read { margin: 0; }
+.reader-footer { padding: 9px 24px; gap: 12px; }
+.reader-footer .text-link { font-size: .76rem; min-height: 42px; }
+#reader-position { text-align: center; font-size: .6rem; }
+@media (max-width: 600px) {
+  .reader { width: 100%; height: 100svh; max-height: 100svh; margin: 0; border: 0; border-radius: 0; }
+  .reader-header { padding: 10px 14px; }
+  .reader-header h2 { font-size: 1rem; }
+  .reader-header .tiny-label { font-size: .55rem; }
+  .reader-toolbar { padding: 8px 14px; gap: 8px 12px; }
+  .reader-toolbar label { flex: none; min-width: 0; gap: 5px; font-size: .65rem; }
+  .reader-toolbar select { width: 120px; max-width: 120px; }
+  .reader-toolbar .book-chapter-label { flex: 1; }
+  .book-chapter-label select { width: 100%; max-width: 150px; min-width: 70px; }
+  .reader-text-controls { margin: 0; }
+  .reader-text-controls button { min-height: 30px; min-width: 32px; }
+  .book-downloads { margin-left: auto; }
+  .book-downloads a { padding: 7px 10px; }
+  .reader-advisory { margin: 6px 14px 0; font-size: .53rem; }
+  #reader-state:not(:empty) { margin: 6px 14px; }
+  .book-stage { padding: 12px 18px; }
+  .book-page-text { inset: 44px 19px 33px 24px; line-height: 1.55; }
+  .book-running-title { top: 11px; left: 24px; right: 19px; font-size: 9px; padding-bottom: 6px; }
+  .book-folio { bottom: 10px; left: 24px; right: 19px; font-size: 9px; }
+  .book-reading-tools { gap: 14px; padding-inline: 14px; }
+  .book-reading-tools .text-link, .book-reading-tools a { font-size: .58rem; }
+  .reader-footer { padding: 5px 14px; gap: 6px; }
+  .reader-footer .text-link { font-size: .65rem; }
+  #reader-position { font-size: .52rem; }
+}
+@media (max-height: 540px) {
+  .reader { height: 100svh; max-height: 100svh; }
+  .reader-header { padding-block: 5px; }
+  .reader-header .tiny-label, .reader-advisory, .book-reading-tools { display: none; }
+  .reader-toolbar { padding-block: 5px; }
+  .book-stage { min-height: 100px; padding-block: 7px; }
+  .book-page-text { inset-block: 34px 24px; }
+  .book-running-title { top: 6px; padding-bottom: 3px; }
+  .book-folio { bottom: 5px; }
+  .reader-footer { padding-block: 2px; }
+}

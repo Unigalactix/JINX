@@ -4,7 +4,8 @@ import { resolve, relative, isAbsolute, extname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const mime = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".txt": "text/plain", ".md": "text/plain" };
+const mime = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".txt": "text/plain", ".md": "text/plain", ".json": "application/json", ".pdf": "application/pdf", ".epub": "application/epub+zip", ".woff": "font/woff", ".woff2": "font/woff2", ".ttf": "font/ttf" };
+const binary = new Set([".png", ".pdf", ".epub", ".woff", ".woff2", ".ttf"]);
 
 export function createPreviewServer(basePath = "/") {
   if (!/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(basePath)) throw new Error("The base path must be / or a path such as /JINX/.");
@@ -23,7 +24,7 @@ export function createPreviewServer(basePath = "/") {
     if (pathname === "/" && basePath !== "/") return send(302, "Open the project path.", { Location: basePath });
     if (!pathname.startsWith(basePath)) return send(404, "Not found.");
     const path = pathname.slice(basePath.length) || "index.html";
-    if (!(path === "index.html" || path === "SOT.md" || /^assets\/[^/]+\.(?:js|css|svg)$/.test(path) || /^Story\/[^/]+\/[^/]+\.txt$/.test(path))) {
+    if (!(path === "index.html" || path === "SOT.md" || /^assets\/[^/]+\.(?:js|css|svg|png)$/.test(path) || /^assets\/books\/(?:en|te|hi|es)\.json$/.test(path) || /^assets\/books\/jinx-(?:en|te|hi|es)\.(?:pdf|epub)$/.test(path) || /^assets\/fonts\/[A-Za-z0-9_.-]+\.(?:woff2?|ttf|txt)$/.test(path) || /^Story\/[^/]+\/[^/]+\.txt$/.test(path))) {
       return send(404, "Not found.");
     }
     const fullPath = resolve(root, path);
@@ -32,7 +33,7 @@ export function createPreviewServer(basePath = "/") {
     try {
       const content = await readFile(fullPath);
       response.writeHead(200, {
-        "Content-Type": `${mime[extname(path)]}; charset=utf-8`,
+        "Content-Type": mime[extname(path)] + (binary.has(extname(path)) ? "" : "; charset=utf-8"),
         "Content-Length": content.length,
         "X-Content-Type-Options": "nosniff",
         "Cache-Control": "no-store",
