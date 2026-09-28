@@ -231,3 +231,113 @@ test("closing during a page turn cancels cleanly and chapter boundaries turn bot
   assert.equal(await page.locator("#reader-chapter").inputValue(), "1");
   assert.match(await page.locator("#reader-position").textContent(), /^Page 1 /);
 });
+
+async function viewReady(page) {
+  await page.waitForFunction(() => !document.querySelector("#book-fullscreen").disabled);
+  await ready(page);
+}
+
+test("full screen expands only the book, preserves reading position and retains animated turns", async (t) => {
+  const page = await openBook(t);
+  await turn(page);
+  await turn(page);
+  const originalPage = await page.locator("#reader-position").textContent();
+  const anchor = await page.locator("#book-page [data-block]").first().getAttribute("data-block");
+  const originalWidth = await page.locator("#book").evaluate((book) => book.clientWidth);
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  assert.equal(await page.evaluate(() => document.fullscreenElement?.id), "reader-viewport");
+  const layout = await page.evaluate(() => {
+    const rect = document.querySelector("#reader-viewport").getBoundingClientRect();
+    return { width: rect.width, height: rect.height, viewport: [innerWidth, innerHeight],
+      topLayer: !!document.elementFromPoint(10, 10).closest("#reader-viewport"),
+      bookWidth: document.querySelector("#book").clientWidth };
+  });
+  assert.equal(layout.width, layout.viewport[0]);
+  assert.equal(layout.height, layout.viewport[1]);
+  assert.equal(layout.topLayer, true, "The website must not cover the full-screen reader");
+  assert.ok(layout.bookWidth > originalWidth);
+  assert.ok(await page.locator(`#book-page [data-block="${anchor}"]`).count() > 0);
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  assert.equal(await page.locator("#reader-position").textContent(), originalPage);
+  assert.equal(await page.evaluate(() => document.fullscreenElement), null);
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  await page.locator("#next-page").click();
+  assert.equal(await page.locator(".book-leaf").evaluate((leaf) => leaf.getAnimations()[0].effect.getTiming().duration), 720);
+  await finishTurn(page);
+  assert.equal(await page.locator("#book-page .book-page-text").evaluate((text) => text.scrollHeight > text.clientHeight + 1), false);
+  await page.locator("#book").press("Escape");
+  await viewReady(page);
+  assert.equal(await page.locator("#reader").evaluate((dialog) => dialog.open), true);
+  assert.equal(await page.locator("#book-fullscreen").getAttribute("aria-pressed"), "false");
+  await page.locator("#book").press("Escape");
+  assert.equal(await page.locator("#reader").evaluate((dialog) => dialog.open), false);
+});
+
+test("browser fullscreen exit and closing the book clean up screen mode", async (t) => {
+  const page = await openBook(t);
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  await page.evaluate(() => document.exitFullscreen());
+  await page.waitForFunction(() => !document.querySelector("#reader").classList.contains("reader-full-page"));
+  assert.equal(await page.locator("#reader").evaluate((dialog) => dialog.open), true);
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  await page.locator("#close-reader").click();
+  await page.waitForFunction(() => !document.querySelector("#reader").open);
+  assert.equal(await page.evaluate(() => document.fullscreenElement), null);
+  assert.equal(await page.evaluate(() => document.activeElement.id), "begin-reading");
+  await page.locator("#begin-reading").click();
+  await ready(page);
+  assert.equal(await page.locator("#book-fullscreen").getAttribute("aria-pressed"), "false");
+});
+
+test("unsupported or blocked fullscreen uses an explicit full-page view without losing the book", async (t) => {
+  const page = await openBook(t, { viewport: { width: 390, height: 844 } });
+  await page.evaluate(() => Object.defineProperty(document, "fullscreenEnabled", { configurable: true, value: false }));
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  assert.match(await page.locator("#book-view-status").textContent(), /Full-page view is active/);
+  assert.equal(await page.locator("#book-fullscreen").getAttribute("aria-pressed"), "true");
+  await turn(page);
+  await page.locator("#book").press("Escape");
+  await viewReady(page);
+  assert.equal(await page.locator("#book-view-status").isVisible(), false);
+  await page.evaluate(() => {
+    Object.defineProperty(document, "fullscreenEnabled", { configurable: true, value: true });
+    document.querySelector("#reader-viewport").requestFullscreen = () => Promise.reject(new TypeError("Fullscreen blocked by embedding policy"));
+  });
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  assert.match(await page.locator("#book-view-status").textContent(), /Browser full screen is unavailable/);
+  for (const [language, expected] of [["te", "పూర్తి తెర"], ["hi", "पूर्ण स्क्रीन"], ["es", "pantalla completa"], ["en", "full screen"]]) {
+    await page.locator("#book-language").selectOption(language);
+    await finishTurn(page);
+    assert.ok((await page.locator("#book-fullscreen").getAttribute("aria-label")).includes(expected));
+    assert.equal(await page.locator("#book-page .book-page-text").evaluate((content) => content.scrollHeight > content.clientHeight + 1), false);
+    assert.equal(await page.locator("#reader-viewport").evaluate((view) => view.scrollWidth > view.clientWidth), false);
+  }
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  assert.equal(await page.locator("#reader").evaluate((dialog) => dialog.open), true);
+});
+
+test("fullscreen exit failure is visible and can be retried without closing the reader", async (t) => {
+  const page = await openBook(t);
+  await page.locator("#book-fullscreen").click();
+  await viewReady(page);
+  await page.evaluate(() => {
+    window.originalExitFullscreen = document.exitFullscreen.bind(document);
+    document.exitFullscreen = () => Promise.reject(new TypeError("Exit blocked"));
+  });
+  await page.locator("#close-reader").click();
+  await viewReady(page);
+  assert.match(await page.locator("#book-view-status").textContent(), /Could not exit full screen/);
+  assert.equal(await page.locator("#reader").evaluate((dialog) => dialog.open), true);
+  await page.evaluate(() => { document.exitFullscreen = window.originalExitFullscreen; });
+  await page.locator("#close-reader").click();
+  await page.waitForFunction(() => !document.querySelector("#reader").open);
+  assert.equal(await page.evaluate(() => document.fullscreenElement), null);
+});

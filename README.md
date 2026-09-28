@@ -46,6 +46,8 @@ Preview it at **http://127.0.0.1:4173/assets/jinx-book-cover.svg** with the loca
 
 **Begin the story** opens the cover. Click the cover or **Open book** to turn it open; **Next page**, **Previous page**, the left/right arrow keys, Page Up/Page Down, and horizontal touch swipes turn individual pages. The chapter menu jumps to a chapter with the same page-turn animation. **Back to cover** keeps your current reading place.
 
+Use **Full screen** beside the close button for a distraction-free, full-page reader with a larger page and more reading space. Supported browsers enter native fullscreen; when unavailable or blocked, the reader fills the browser viewport and explains the limitation. Page-turn animations, language selection, downloads, and text-size controls remain available. The current reading anchor is retained through resizing; toggling back without turning a page restores the original page. **Exit full screen** or the first **Escape** returns to the normal reader without closing the book; a second Escape closes it. The close button also exits any fullscreen mode entered by the reader. These controls are localized in all four languages.
+
 The reader measures text against the available page area, splitting long paragraphs at word boundaries without dropping text. Resizing the window or changing text size repaginates around the current paragraph. Mobile uses the same single-page reader. Each turn animates a physical leaf around its spine for 720 ms; the operating system's reduced-motion preference replaces the 3D rotation with a brief 120 ms fade.
 
 Use the language menu for **English**, **తెలుగు**, **हिन्दी**, or **Español**. Language changes retain the current chapter and nearby paragraph. English is loaded from the original chapter files; the three translations are stored in [assets/books](assets/books). Translated editions are AI-assisted drafts and should receive a fluent human editorial review before commercial publication. The original English cover is shared by all four editions.
@@ -110,6 +112,8 @@ npm test
 ```
 
 Tests cover the real chapter files, SOT chart parsing, reading records, translation block parity, EPUB/PDF structure, and HTTP serving under `/JINX/`. Browser tests verify actual rotation keyframes, forward/backward navigation, exact rendered text across every chapter and language, mobile reflow, download controls, saved progress, reduced motion, and missing-translation recovery.
+
+Fullscreen checks cover native entry/exit, full-viewport sizing and layering, reading-anchor preservation, animated navigation, Escape and close cleanup, localized mobile controls, unsupported/blocked browser behavior, and retryable exit errors.
 
 Key-moment checks cover animation progression/completion, pause/replay, scrubbing, offscreen suspension, spoiler gating, lunar dates, all twelve identity choices, random-focus bounds, chapter entry, responsive layouts, reduced motion, and the REDOVERSE reference.
 

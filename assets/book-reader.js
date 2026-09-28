@@ -7,6 +7,13 @@ export const bookLanguages = {
   es: { name: "Español", language: "Idioma", chapter: "Capítulo", cover: "Portada", open: "Abrir libro", previous: "Página anterior", next: "Página siguiente", back: "Volver a la portada", mark: "Marcar como leído", marked: "Capítulo leído", page: "Página", of: "de", loading: "Preparando el libro…", retry: "Reintentar", end: "Fin del libro", advisory: "Historia íntegra · Revelaciones, violencia gráfica, sangre, muerte masiva y duelo. Traducción asistida por IA; pendiente de revisión editorial.", error: "No se pudo abrir el libro.", source: "Original en inglés", close: "Cerrar libro" },
 };
 
+const viewLabels = {
+  en: { enter: "Full screen", exit: "Exit full screen", fallback: "Full-page view is active. Browser full screen is unavailable here.", exitError: "Could not exit full screen. Try again or use your browser's Escape key." },
+  te: { enter: "పూర్తి తెర", exit: "పూర్తి తెర మూసివేయండి", fallback: "పూర్తి పేజీ వీక్షణ ప్రారంభమైంది. ఇక్కడ బ్రౌజర్ పూర్తి తెర అందుబాటులో లేదు.", exitError: "పూర్తి తెర నుండి బయటకు రాలేకపోయాము. మళ్లీ ప్రయత్నించండి లేదా Escape నొక్కండి." },
+  hi: { enter: "पूर्ण स्क्रीन", exit: "पूर्ण स्क्रीन से बाहर", fallback: "पूरा पृष्ठ खुला है। यहाँ ब्राउज़र की पूर्ण स्क्रीन उपलब्ध नहीं है।", exitError: "पूर्ण स्क्रीन से बाहर नहीं आ सके। फिर प्रयास करें या Escape दबाएँ।" },
+  es: { enter: "Pantalla completa", exit: "Salir de pantalla completa", fallback: "La vista de página completa está activa. El modo de pantalla completa no está disponible aquí.", exitError: "No se pudo salir de la pantalla completa. Reintenta o pulsa Escape en el navegador." },
+};
+
 export function validateEdition(value, language, originals) {
   if (!Object.hasOwn(bookLanguages, language) || !value || value.language !== language || value.title !== "JINX" ||
       typeof value.subtitle !== "string" || !value.subtitle.trim() || !Array.isArray(value.chapters) || value.chapters.length !== chapters.length) {
@@ -81,6 +88,7 @@ class BookReader {
     this.callbacks = callbacks;
     this.$ = (id) => document.getElementById(id);
     this.dialog = this.$("reader");
+    this.viewport = this.$("reader-viewport");
     this.book = this.$("book");
     this.surface = this.$("book-page");
     this.measure = this.$("book-measure");
@@ -94,7 +102,12 @@ class BookReader {
     this.generation = 0;
     this.returnFocus = null;
     this.pendingResize = false;
+    this.reflowAnchor = null;
     this.storageAvailable = true;
+    this.fullPage = false;
+    this.ownsFullscreen = false;
+    this.fullscreenBusy = false;
+    this.viewNotice = null;
     try {
       const saved = localStorage.getItem("jinx-book-language");
       if (saved !== null && !Object.hasOwn(bookLanguages, saved)) {
@@ -104,7 +117,14 @@ class BookReader {
     } catch (error) { this.storageError(error); }
     this.$("book-language").value = this.language;
     this.$("close-reader").addEventListener("click", () => this.close());
-    this.dialog.addEventListener("cancel", (event) => { event.preventDefault(); this.close(); });
+    this.dialog.addEventListener("cancel", (event) => { event.preventDefault(); this.escape(); });
+    this.$("book-fullscreen").addEventListener("click", () => this.toggleFullscreen());
+    document.addEventListener("fullscreenchange", () => {
+      if (this.ownsFullscreen && document.fullscreenElement !== this.viewport) {
+        this.ownsFullscreen = false;
+        this.setFullPage(false);
+      }
+    });
     this.dialog.addEventListener("close", () => {
       document.body.classList.remove("reader-open");
       if (this.returnFocus instanceof HTMLElement && this.returnFocus.isConnected) this.returnFocus.focus();
@@ -133,7 +153,7 @@ class BookReader {
     this.$("smaller-text").addEventListener("click", () => this.setSize(this.size - 1));
     this.$("larger-text").addEventListener("click", () => this.setSize(this.size + 1));
     this.dialog.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); this.close(); return; }
+      if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); this.escape(); return; }
       if (event.target.closest("select, input, textarea, a, button")) return;
       if (["ArrowRight", "PageDown", "ArrowLeft", "PageUp"].includes(event.key)) {
         event.preventDefault();
@@ -165,6 +185,74 @@ class BookReader {
 
   get text() { return bookLanguages[this.language]; }
 
+  syncViewControls() {
+    const labels = viewLabels[this.language];
+    this.$("book-fullscreen-label").textContent = this.fullPage ? labels.exit : labels.enter;
+    this.$("book-fullscreen").setAttribute("aria-label", this.fullPage ? labels.exit : labels.enter);
+    this.$("book-fullscreen").setAttribute("aria-pressed", String(this.fullPage));
+    this.$("book-fullscreen").disabled = this.fullscreenBusy || this.turning;
+    this.$("close-reader").disabled = this.fullscreenBusy;
+    this.$("book-view-status").textContent = this.viewNotice ? labels[this.viewNotice] : "";
+    this.$("book-view-status").hidden = !this.viewNotice;
+  }
+
+  setFullPage(value) {
+    this.fullPage = value;
+    this.dialog.classList.toggle("reader-full-page", value);
+    if (!value) this.viewNotice = null;
+    this.syncViewControls();
+    if (this.turning) this.pendingResize = true;
+    else this.repaginate();
+  }
+
+  async toggleFullscreen() {
+    if (this.fullscreenBusy || this.turning || !this.dialog.open) return;
+    if (this.fullPage) { await this.exitFullscreen(); return; }
+    this.fullscreenBusy = true;
+    this.viewNotice = null;
+    this.setFullPage(true);
+    try {
+      if (document.fullscreenElement) return;
+      if (!document.fullscreenEnabled || !this.viewport.requestFullscreen) {
+        this.viewNotice = "fallback";
+        return;
+      }
+      await this.viewport.requestFullscreen();
+      this.ownsFullscreen = true;
+    } catch (error) {
+      console.warn("Browser full screen was unavailable; keeping the expanded reader:", error);
+      this.viewNotice = "fallback";
+    } finally {
+      this.fullscreenBusy = false;
+      this.syncViewControls();
+    }
+  }
+
+  async exitFullscreen() {
+    if (this.fullscreenBusy) return false;
+    this.fullscreenBusy = true;
+    this.syncViewControls();
+    try {
+      if (this.ownsFullscreen && document.fullscreenElement === this.viewport) await document.exitFullscreen();
+      this.ownsFullscreen = false;
+      this.setFullPage(false);
+      return true;
+    } catch (error) {
+      console.error("Could not exit book full screen:", error);
+      this.viewNotice = "exitError";
+      return false;
+    } finally {
+      this.fullscreenBusy = false;
+      this.syncViewControls();
+    }
+  }
+
+  escape() {
+    if (this.fullscreenBusy) return;
+    if (this.fullPage) this.exitFullscreen();
+    else this.close();
+  }
+
   storageError(error) {
     if (!(error instanceof DOMException) || !["SecurityError", "QuotaExceededError", "NS_ERROR_DOM_QUOTA_REACHED"].includes(error.name)) throw error;
     this.storageAvailable = false;
@@ -189,6 +277,7 @@ class BookReader {
     }
     this.$("reader-title").textContent = this.edition?.language === this.language ? this.edition.subtitle : "JINX";
     this.refreshProgress();
+    this.syncViewControls();
   }
 
   open({ chapterIndex = 0, cover = true } = {}) {
@@ -210,7 +299,9 @@ class BookReader {
     this.prepare({ cover, restore: true });
   }
 
-  close() {
+  async close() {
+    if (this.fullscreenBusy) return;
+    if (this.fullPage && !(await this.exitFullscreen())) return;
     this.generation++;
     this.controller?.abort();
     this.animation?.cancel();
@@ -220,6 +311,7 @@ class BookReader {
 
   async prepare({ cover = false, anchor = null, restore = false, animate = false } = {}) {
     const outgoing = animate ? this.surface.cloneNode(true) : null;
+    this.reflowAnchor = null;
     const generation = ++this.generation;
     this.controller?.abort();
     this.animation?.cancel();
@@ -356,6 +448,7 @@ class BookReader {
   }
 
   anchor() {
+    if (this.reflowAnchor) return this.reflowAnchor;
     const start = this.pages[this.pageIndex < 0 ? this.resumePage ?? 0 : this.pageIndex]?.segments[0];
     return start ? { block: start.block, offset: start.offset } : { block: 0, offset: 0 };
   }
@@ -364,12 +457,13 @@ class BookReader {
     if (!this.ready || !this.dialog.open) return;
     const cover = this.pageIndex < 0;
     const start = cover ? this.pages[this.resumePage ?? 0]?.segments[0] : null;
-    const anchor = start ? { block: start.block, offset: start.offset } : this.anchor();
+    const anchor = this.reflowAnchor ?? (start ? { block: start.block, offset: start.offset } : this.anchor());
     try {
       this.paginate();
       const target = pageForAnchor(this.pages, anchor);
       if (cover) this.resumePage = target;
       this.pageIndex = cover ? -1 : target;
+      this.reflowAnchor = anchor;
       this.render();
     } catch (error) { this.fail(error, () => this.prepare({ cover, anchor })); }
   }
@@ -424,6 +518,7 @@ class BookReader {
   }
 
   updateControls() {
+    this.syncViewControls();
     const busy = !this.ready || this.turning;
     const last = this.chapterIndex === chapters.length - 1 && this.pageIndex === this.pages.length - 1;
     this.$("previous-page").disabled = busy || this.pageIndex < 0;
@@ -476,6 +571,7 @@ class BookReader {
       await this.animation.finished;
       if (generation !== this.generation || !this.dialog.open) return;
       this.pageIndex = target;
+      this.reflowAnchor = null;
       this.render();
       this.book.focus({ preventScroll: true });
     } catch (error) {

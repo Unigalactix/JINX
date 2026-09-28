@@ -4,8 +4,20 @@
   max-height: 96svh;
   background: #171b1b;
 }
+.reader-viewport { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; background: #171b1b; overflow: hidden; }
+.reader-viewport:fullscreen { width: 100vw; height: 100dvh; }
 .reader-header { padding: 14px 24px; }
 .reader-header h2 { font-size: 1.2rem; }
+.reader-header > div:first-child { min-width: 0; }
+.reader-window-controls { display: flex; align-items: center; gap: 10px; margin-left: 20px; flex-shrink: 0; }
+.reader-fullscreen { display: inline-flex; align-items: center; gap: 7px; min-height: 43px; padding: 8px 12px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: .72rem; }
+.reader-fullscreen:hover, .reader-fullscreen[aria-pressed="true"] { border-color: var(--sage); background: #26312b; }
+.book-view-status { margin: 8px 24px 0; color: #ddc2a8; font-size: .7rem; }
+.reader.reader-full-page { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }
+.reader-full-page .book { width: min(840px, 100%); }
+.reader-full-page .book-page-text { inset-inline: clamp(24px, 6vw, 84px); }
+.reader-full-page .reader-header { padding-block: 8px; }
+.reader-full-page .reader-header .tiny-label, .reader-full-page .reader-advisory { display: none; }
 .reader-toolbar { padding: 10px 24px; gap: 16px; flex-wrap: wrap; }
 .reader-toolbar select { max-width: 185px; }
 .reader-toolbar label { min-width: 0; }
@@ -51,6 +63,11 @@
   .reader-header { padding: 10px 14px; }
   .reader-header h2 { font-size: 1rem; }
   .reader-header .tiny-label { font-size: .55rem; }
+  .reader-window-controls { gap: 6px; margin-left: 10px; }
+  .reader-fullscreen { padding-inline: 8px; font-size: .62rem; max-width: 118px; }
+  .reader-header h2 { overflow-wrap: anywhere; }
+  .reader-full-page .book-page-text { inset-inline: 24px 19px; }
+  .book-view-status { margin-inline: 14px; font-size: .62rem; }
   .reader-toolbar { padding: 8px 14px; gap: 8px 12px; }
   .reader-toolbar label { flex: none; min-width: 0; gap: 5px; font-size: .65rem; }
   .reader-toolbar select { width: 120px; max-width: 120px; }
