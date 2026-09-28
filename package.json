@@ -1,0 +1,15 @@
+{
+  "name": "jinx-story-archive",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A no-build, single-page interactive archive for JINX.",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "node --test tests/site.test.mjs",
+    "check": "node --check assets/app.js && node --check assets/content.js && node --check tools/serve.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,359 @@
+CHAPTER ONE
+HALLELUJAH
+
+Pasadena, California
+March 2165
+
+
+The morning the Moon's death sentence became public, Egon Stein woke in a greenhouse wearing someone else's coat.
+
+The coat belonged to him. He knew that after checking the name inside the collar. What he did not know was why he had bought it, why there was salt on the sleeves, or what had happened to Tuesday.
+
+A note waited beside a tray of tomato seedlings.
+
+You ate. You took your medication. The car is in Lot C.
+Helen knows.
+Please don't throw this notebook away again.
+
+Underneath, in smaller handwriting:
+
+The basil needs less water.
+
+Egon sat on an overturned bucket.
+
+Beyond the greenhouse glass, dawn spread over the San Gabriel Mountains. Delivery drones moved above the university hospital. Somewhere, a leaf blower began its ancient, apparently immortal argument with the world.
+
+Above the hospital, a maintenance swarm repaired the transparent skin of a fusion tower. The university could grow a replacement kidney in six days. It had still not found a quiet way to clear a sidewalk.
+
+His phone had forty-three missed calls.
+
+The last was from David Mercer.
+
+He answered the next one.
+
+"Tell me you're sitting down," David said.
+
+"I'm considering making it permanent."
+
+"Come to JPL."
+
+***
+
+In the conference room, nobody had touched the pastries.
+
+That frightened Egon before the diagrams did.
+
+David was an orbital dynamicist who ate whenever he was afraid. Now he stood beside a wall display, turning a paper cup between his hands without drinking.
+
+Miriam Cho, director of the lunar observation network, dimmed the windows.
+
+The Moon appeared above the table.
+
+Its projected orbit was blue. Its measured orbit was white.
+
+The lines should have overlapped.
+
+"Instrument error?" Egon asked.
+
+"Eleven observatories," Miriam said. "Four lunar reflectors. Independent clocks. We've spent nine months trying to make it an instrument error."
+
+David advanced the model.
+
+A thread of violet opened beneath the Moon's south polar region.
+
+"Localized spacetime shear. We don't have a complete mechanism. We do have measurements of the angular momentum loss."
+
+"Tides don't account for that."
+
+"We know."
+
+The white orbit tightened.
+
+Egon watched fifteen years pass in twenty seconds.
+
+The final image was not a collision. Before that, tidal forces pulled the Moon into a broken arc. The arc crossed Earth's atmosphere.
+
+The model went white.
+
+"Projection complete," said the room's intelligence.
+
+Its name was Morrow. It had spent nine months attacking the scientists' conclusions, searching for the comforting mistake every human in the room wanted it to find.
+
+It displayed its confidence limits beside the devastation.
+
+"No simulation predicts an exact impact date," it said. "The uncertainty is physical, not a shortage of computation."
+
+"Fifteen years is the outer bound," Miriam said.
+
+"How certain?"
+
+"After year eight, the feedback becomes nonlinear. From there, impact could take another seven years. It could take three. We cannot safely plan launches inside that uncertainty."
+
+Egon looked at the untouched food.
+
+"Eight years to leave."
+
+Miriam nodded.
+
+"Safe launch planning ends in 2173. The outer impact bound is 2180."
+
+Outside the darkened windows, California continued having a morning.
+
+***
+
+Helen Vale found him in the stairwell.
+
+She carried two sandwiches and the blue notebook from the greenhouse.
+
+"You left this in the car."
+
+"Apparently I've been leaving myself everywhere."
+
+She sat beside him.
+
+Helen had known him before the eighth doctorate, before his face appeared on documentaries about closed ecosystems, before the university learned to describe his absences as eccentricity.
+
+She was a neurologist. She was not his therapist. She made that distinction whenever he tried to turn friendship into free medical supervision.
+
+"Did you call Dr. Okafor?" she asked.
+
+"The Moon is falling."
+
+"That doesn't cancel Thursday."
+
+He laughed once.
+
+Then he covered his face.
+
+Eight doctorates had made him fluent in different varieties of not knowing. Astrophysics, planetary dynamics, biophysics, botany; the certificates occupied a cabinet he used mostly to store broken equipment.
+
+None of them helped him account for a missing day.
+
+"What if I lose time when people need me?"
+
+"Then we build a plan for that."
+
+"There are twelve of us, Helen."
+
+"I know."
+
+"Some days I can barely organize breakfast."
+
+She unwrapped a sandwich and placed it in his hands.
+
+"Start there."
+
+***
+
+The announcement came at six.
+
+The president spoke from Washington. The lunar measurements were published simultaneously, so nobody could claim the catastrophe existed only inside a government's promise.
+
+The continental refuge projects would expand. Deep shelters beneath stable bedrock would receive fusion plants, sealed farms, and seismic-isolation systems. California's coastal populations would be moved inland wherever transport and shelter capacity allowed.
+
+No human evacuation to another star had been approved.
+
+Conventional propulsion could not make the journey within a lifetime. The new compression drives could carry machines, but their fields destroyed the fine organization of an already conscious human brain. Cooling a person did not remove the damage.
+
+For the people alive on Earth, the available refuge was still Earth.
+
+There would not be enough capacity.
+
+That sentence did not appear in the speech.
+
+It appeared in the silence between all the others.
+
+In Los Angeles, traffic stopped on the freeways. People got out and looked up, though the Moon had not risen yet.
+
+In Sacramento, a man tried to buy a grocery store rather than the food inside it.
+
+On a church broadcast from San Diego, the Reverend Elias Ward said, "Hallelujah."
+
+Egon nearly turned it off.
+
+Then Ward continued.
+
+"Not because this is good. It is not good. Not because I understand it. I don't. But if there is work left for our hands, let us not spend the whole evening shaking them at heaven."
+
+The church opened its basement as a food distribution center.
+
+By midnight, the line reached three blocks.
+
+***
+
+Sanya Rao came to Egon's greenhouse two days later.
+
+She was carrying a dead sapling.
+
+"The press wants me to explain how many forests fit on a spaceship."
+
+"What did you tell them?"
+
+"That a forest isn't luggage."
+
+She put the sapling on his desk.
+
+Its root system had grown around a sensor cable and strangled itself.
+
+"We keep making the same mistake," she said. "We think saving things means putting them in containers."
+
+Egon turned the brittle leaves between his fingers.
+
+Beyond the greenhouse, the university's emergency siren sounded for a scheduled drill. Everybody still flinched.
+
+"What if we don't send the people?" he asked.
+
+Sanya stared.
+
+"Choose your next words carefully."
+
+"We send bodies grown from them. We keep them in developmental stasis, without an active conscious neural pattern. Their complete neural maps travel separately, in protected storage. The receiving system installs those patterns only after the drive is shut down at the destination."
+
+"Copies."
+
+"People, when they awaken."
+
+"Those are not mutually exclusive."
+
+He pulled a clean sheet toward him.
+
+Conventional evacuation needed cabins, food, exercise space, medical teams, and fuel for bodies that had already spent decades aging.
+
+The work Helen's institute had done on neural restoration could preserve a mind's structure as inactive information. Medical AIs could supervise accelerated tissue development cell by cell, though building an entire healthy adult remained expensive and unreliable.
+
+A ship could carry dormant clone bodies, stored consciousness records, embryos, and the means to build habitats. AI would perform the whole journey. Only after arrival would the clones gain consciousness and begin their own lives.
+
+Not uploaded ghosts.
+
+People.
+
+Five ships, launched toward five separate destinations.
+
+No single failure would end the attempt.
+
+"How many?" Sanya asked.
+
+He began calculating.
+
+She waited.
+
+"A thousand per ship."
+
+"A thousand originals, copied five times?"
+
+"If they consent. Different teams could be added later if manufacturing improves. But that's a baseline we might actually finish."
+
+Sanya sat down.
+
+"You realize that doesn't save the people who volunteer."
+
+He stopped writing.
+
+In the corridor, someone was crying into a phone.
+
+"Yes," he said.
+
+"Then never sell it as that."
+
+***
+
+The first meeting took place above a closed aquarium in Long Beach.
+
+There were cheaper rooms, but Salvador Vega had found one with working power and a view of the Pacific.
+
+Salvador had flown relief craft into smoke so thick the runway existed only on instruments. He distrusted projects named after birds, gods, and historical conquerors.
+
+"REDO?" he said.
+
+"A working name," Egon answered.
+
+"Sounds like we get to fix our mistakes."
+
+"We get another place to make them."
+
+"Better. Put that in the brochure."
+
+David reviewed propulsion estimates. Helen described the limits of neural copying. Sanya listed the species they could not yet keep alive in closed environments.
+
+Nobody said salvation.
+
+Near the end, Egon displayed the proposed destination catalog.
+
+Tau Ceti. Epsilon Eridani. Barnard's Star. 61 Cygni.
+
+Four stellar systems where a settlement might have to begin in an artificial habitat rather than on a welcoming planet.
+
+The fifth was a newly characterized system thirty-five light-years away. On the survey network, the public had started calling it Redo.
+
+Its strongest candidate was an ocean planet.
+
+Zan.
+
+Preliminary spectra suggested air they might someday breathe. Its rotation lasted approximately thirty-six hours. Two moons crossed its skies.
+
+"Almost nine centuries on a conventional trajectory," David said.
+
+Egon switched the display to a second route.
+
+The proposed metric-compression drive did not make the ship outrun light inside its local surroundings. It shortened the distance the ship had to cross. Robotic missions had tested small corridors; carrying people and an entire settlement through one was a different undertaking.
+
+"Six years by the compressed route," Egon said. "Launch in 2172. Arrival in 2178."
+
+Morrow highlighted a red boundary around the model.
+
+"Subject to successful full-scale qualification. The route must advance along the same time reference as Earth. Any solution that folds into an earlier date is excluded."
+
+"And we do not relax that condition to meet the schedule," David said.
+
+Salvador leaned back.
+
+"I'm going to be very late for dinner."
+
+Helen did not smile.
+
+"No one has kept an unawakened adult clone stable for that long."
+
+"Neither has surviving the end of Earth."
+
+Sanya pointed at the ocean planet.
+
+"And if the air is poison?"
+
+"We live in habitats."
+
+"If the soil kills our crops?"
+
+"We don't plant in it."
+
+"If the people wake up and decide your mission was a terrible idea?"
+
+Egon looked at the thousand empty places on the crew chart.
+
+"Then it becomes their mission."
+
+That was the sentence Helen wrote down.
+
+***
+
+That night, Egon stayed after the others left.
+
+Far below, waves struck the concrete seawall. Across the harbor, cranes loaded components for inland refuges that would not be large enough.
+
+He opened the blue notebook.
+
+For several minutes, he could not find language that did not sound like another demand.
+
+At last he wrote:
+
+I want to do this. I am frightened that wanting it will make me ignore you.
+Please help me not do that.
+
+He left the pen uncapped.
+
+When he looked down again, a second line had appeared beneath his own.
+
+Then stop calling us lost time.
+
+He knew Mara's handwriting.
+
+For once, he did not close the book.
