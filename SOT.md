@@ -4,11 +4,11 @@
 
 > **SPOILER WARNING:** This reference includes character identities, deaths, major reveals, and the ending.
 
-**Status:** Tracks the eight completed story files under [Story](Story), including the timeline, dormant-clone and Earth-survival rules, JINX's two-moon depiction, and the later REDO Volume 1 revelation. The narrative files remain unchanged.
+**Status:** Tracks the eight completed JINX story files under [Story](Story), including the timeline, dormant-clone and Earth-survival rules, JINX's two-moon depiction, and the later REDO Volume 1 revelation. Also tracks the two completed JINXED continuation chapters in [assets/jinxed-content.js](assets/jinxed-content.js). The original eight narrative files remain unchanged.
 
 **Epilogue tracking:** Updated against the completed "Two Cradles" epilogue. Written events are distinguished from future-story setup.
 
-**Continuity review:** Corrections and clarifications are recorded in Section 14. Sections 15-16 chart the emotions, gore, violence, and peril actually present in the revised draft.
+**Continuity review:** Corrections and clarifications are recorded in Section 14. Sections 15-16 chart only the eight original JINX narrative units; they do not assign ratings to JINXED. Section 17 records JINXED's Earth-side continuation, lunar-ring events, hidden access, and separate website experience.
 
 ## QUICK LOOKUP
 
@@ -21,6 +21,7 @@
 - [Section 14](#14-continuity-review-and-correction-log): Findings, fixes, checked chronology, and intentionally unresolved questions.
 - [Section 15](#15-emotion-charts): Chapter-level emotional intensity, character progression, and epilogue beats.
 - [Section 16](#16-gore-violence-and-peril-charts): Separate ratings for graphic content, deliberate violence, and disaster or danger.
+- [Section 17](#17-jinxed-hidden-earth-continuation): JINXED Chapter 1 and Chapter 2, the `JINXED` code unlock, Earth survivors, lunar slowing and ring formation, and JINXED-only moments and references.
 
 ## 1. CORE STORY AND FIXED CANON
 
@@ -48,6 +49,7 @@
 - From that point, collision could take another 3-7 years.
 - In this draft, the Moon breaks and its fragments strike Earth on December 21, 2177.
 - Earth is devastated but not physically split apart. Some people survive in deep, protected Earth refuges.
+- **JINXED continuation:** Records recovered in 2181 show the Moon's inward motion slowing during its final 2177 approach, before it breaks. Some fragments strike Earth; others remain in orbit and spread into an uneven ring observed in 2181-2182. The cause of the slowing remains unresolved. This expands the account of the same disaster, not a second lunar approach after JINX.
 
 ### The original people
 
@@ -158,6 +160,14 @@ The final clear-rain scene on Zan deliberately mirrors this moment.
 - **Subtitle:** Two Cradles.
 - **Period:** 2180.
 - **Purpose:** Describe REDO and its two moons; introduce the births of Rak and Theo into different families and establish the roots of their later conflict.
+
+### Separate continuation: JINXED
+
+- **Reading order:** JINXED **Chapter 1**, followed by JINXED **Chapter 2**, after the completed JINX story.
+- **Period:** Earth, 2181-2182, with recovered observations of the December 2177 lunar approach and breakup.
+- **Source:** [JINXED chapter text and records](assets/jinxed-content.js); displayed in the [separate hidden archive](jinxed.html).
+- **Naming:** Keep the plain chapter titles **Chapter 1** and **Chapter 2**. Do not rename them after their key moments or add them as Chapters 8 and 9 of JINX.
+- **Scope:** An Earth-side continuation, separate from the REDO Volume 1 setup. Chapter summaries and presentation requirements are recorded in [Section 17](#17-jinxed-hidden-earth-continuation).
 
 ## 4. MAIN CHARACTERS AND THEIR PURPOSE
 
@@ -736,6 +746,7 @@ All scenes below are written. Their later consequences are sequel setup, not com
 - December 21: The Moon breaks and fragments devastate Earth.
 - December 22: Delayed collision warnings reach Mercy; their event date is December 21.
 - Originals die, remain missing, or survive on Earth.
+- JINXED's later recovered records add the slowing final approach and distinguish Earth-impacting fragments from debris that remains bound in orbit. These observations do not move the disaster date.
 
 ### 2178
 
@@ -750,7 +761,21 @@ All scenes below are written. Their later consequences are sequel setup, not com
 - Rak is born to Mateo and Leena in the upper neighborhood.
 - Theo is born to Helen and David eleven local days later in the central clinic.
 - The family and infrastructure differences establish the sequel's conflict.
-- The story ends within this year.
+- JINX ends within this year.
+
+### 2181 - JINXED Chapter 1
+
+- At a California refuge, Mira Sen and Tomas Reed recover an eleven-second view of a pale band in the sky.
+- They repair a monitoring-station receiver and compare the final lunar tracks from three stations.
+- The recovered 2177 observations show decreasing inward speed as the Moon nears Earth, then breakup into separate fragment paths.
+- Some fragments struck Earth; others appear to have stayed in orbit. Mira does not claim to know the cause of the slowing or declare the sky safe.
+
+### 2182 - JINXED Chapter 2
+
+- Continued observations show a broad, uneven ring formed from the bound lunar debris over the years since the breakup.
+- A second camera improves local measurements; in March, another refuge north of the old bay establishes contact and contributes independent observations.
+- The survivors use the measurements to plan limited surface work and a supervised six-minute sky-watch window, returning inside before that window ends.
+- The second record ends with ongoing observation, uncertain hazards, and the unexplained slowing still unresolved.
 
 ### California locations
 
@@ -766,6 +791,7 @@ All scenes below are written. Their later consequences are sequel setup, not com
 - Vandenberg: Automated fleet launch infrastructure.
 - San Diego: Earth-side Egon's last relocation-center work.
 - Sierra refuge network: Planned shelter and Helen's later medical work.
+- JINXED: A California refuge with a surface mast and eastern hatch, plus a second observing refuge north of the old bay. The new chapters do not establish exact coordinates or identify this refuge as one of the named originals' shelters.
 
 ### Other locations
 
@@ -816,6 +842,7 @@ All scenes below are written. Their later consequences are sequel setup, not com
 - Foreshadowed: The sons will interpret those records differently and come into conflict over what the colony should protect.
 - Not yet written: Their adult personalities, the incident that turns disagreement into conflict, its scale, their eventual choices, or its outcome.
 - Do not treat a possible later faction, war, or leadership title as established canon until it is actually developed.
+- This unfinished Rak/Theo storyline is distinct from JINXED's two completed Earth-side chapters. JINXED does not depict their later conflict or supply new REDO-system events.
 
 
 ## 13. CONTINUITY RULES FOR EXPANSION
@@ -842,6 +869,9 @@ All scenes below are written. Their later consequences are sequel setup, not com
 - Separate a warning's event date from the later date on which the ship receives it.
 - Keep E-0's recorder inside the blade's hilt and preserve the single-recording origin of the early warning.
 - Use the clock convention in Section 11 rather than treating 36-hour local days as Earth days.
+- Keep JINXED separate: its present-day action is on Earth in 2181-2182, after JINX's 2180 ending. Its recovered lunar records describe the same December 2177 disaster.
+- Preserve the sequence of slowing inward motion, breakup, impact plus surviving orbital debris, and later ring formation. Do not turn the ring into a reversal of the devastation or a guarantee of safety.
+- Keep JINXED's page limited to its own chapters, key moments, and references. Do not import the original JINX scene collection, REDO material, or the full mixed-story SOT as its on-page reference content.
 
 
 ## 14. CONTINUITY REVIEW AND CORRECTION LOG
@@ -1012,3 +1042,104 @@ Chapter values are peaks, not averages. References to past events are distinguis
 | Closing motions and clear rain | 0 | 0 | 1 | Foreboding is political and emotional. The sequel's later conflict has not happened. |
 
 **Intensity pattern:** The prologue is the peak of direct graphic violence. Chapter 4 returns to bodily horror through blood rain and testimony. Chapter 6 is the peak of disaster grief, not gore. The epilogue lowers physical intensity while preserving unease about the future.
+
+
+## 17. JINXED: HIDDEN EARTH CONTINUATION
+
+### Status, identity, and sources
+
+- **Title:** JINXED.
+- **Written chapters:** Exactly two completed chapters, named **Chapter 1** and **Chapter 2**.
+- **Present-day setting:** Earth, 2181-2182, after the events and ending of JINX.
+- **Recovered-event setting:** Earth's final lunar approach and breakup in December 2177.
+- **Focus:** The Moon approaches Earth, slows in its inward motion as it nears the planet, and breaks into pieces. Some pieces strike Earth; the debris that remains in orbit develops into a ring around Earth.
+- **Tone:** Disaster aftermath, loss, careful observation, shared responsibility, and uncertain survival. The ring does not justify the disaster that created it.
+- **Authoritative English text, moments, and references:** [assets/jinxed-content.js](assets/jinxed-content.js).
+- **Website entrypoint:** [jinxed.html](jinxed.html). This is its own archive, not an extra section of the public JINX landing page.
+
+### Hidden access and reveal behavior
+
+1. The entry point is the **JINX wordmark in the main navbar**, as marked in the requested design.
+2. **Double-click** that wordmark to open the access-code dialog. A normal single click retains its home-navigation behavior.
+3. Enter the exact, case-sensitive code **`JINXED`** and select **Unlock** to reveal the separate JINXED page.
+4. An incorrect code displays an error and leaves the archive locked. **Cancel** or **Escape** closes the dialog without granting access.
+5. Touch users can double-tap the wordmark. Keyboard users can focus it and press **Shift+Enter**.
+6. The unlock lasts for the current tab's session, including page refreshes. **Lock & leave** clears the unlock and returns to the main archive.
+7. A direct visit without an unlock shows only a sealed-archive screen and code entry. The story module is requested only after unlocking.
+
+**Access limitation:** This is a hidden-content/Easter-egg mechanism on a static website, not secure authentication. The source code and story assets are publicly retrievable, and this spoiler reference deliberately documents the code. JavaScript and session storage are required; unavailable storage produces a visible error rather than an unlocked fallback.
+
+### Chapter 1
+
+**Period:** Earth, 2181.
+
+**Purpose:** Recover evidence of the Moon's final approach and establish that some of its material remained above Earth.
+
+- Mira Sen finds an eleven-second clear-sky recording containing a pale band beyond a California refuge.
+- Tomas Reed helps repair a recovered receiver cabinet without displacing essential greenhouse maintenance.
+- The recovered tracks from three monitoring stations agree: during the final 2177 approach, the Moon continues inward but covers less distance toward Earth in comparable time intervals.
+- Mira checks the clocks and measurements but does not identify a confirmed cause for the slowing.
+- The reconstruction shows deformation and fractures, followed by breakup into unequal pieces. Some trajectories strike Earth; others retain sufficient sideways motion to miss the surface and remain in Earth-bound orbit.
+- The orbiting tracks suggest an explanation for the pale band. Mira reports uncertainty openly when Neri asks whether it can still fall.
+
+### Chapter 2
+
+**Period:** Earth, 2182.
+
+**Purpose:** Establish the debris ring and show how the survivors learn to live beneath it without declaring the danger over.
+
+- Years of encounters, collisions, and spreading among the bound fragments produce a broad, uneven ring, with bright lanes, gaps, and larger remnants.
+- Continuing falling debris and unsafe surface conditions prevent the ring from becoming a simple symbol of rescue.
+- A council discussion about opening the eastern hatch results in a temporary inner seal, scheduled work intervals, and a remotely operated second camera.
+- In March, another refuge north of the old bay exchanges measurements. Independent observations confirm the broad ring structure while correcting overconfident local estimates.
+- Neri and other residents attend a brief, supervised sky watch with protective equipment and a retreat plan.
+- The closing record connects the recovered slowing and breakup to the later ring survey. The cause of the slowing, the full extent of remaining hazards, and Earth's long-term safety remain open questions.
+
+### Earth-side characters
+
+| Character | Role | Established purpose and limits |
+| --- | --- | --- |
+| Mira Sen | Observatory worker and keeper of the Earth observations | Recovers and checks the lunar data; records uncertainty and corrects unsupported predictions. No connection to an existing named JINX character is established. |
+| Tomas Reed | Surface-mast and instrument maintainer | Repairs the observation equipment, brings practical hatch-safety evidence, and supervises surface access. He is not an off-world arrival. |
+| Neri | Child living in the refuge | Asks about the ring's danger and witnesses the supervised sky watch. Her exact age, birth date, and wider family history are not assigned. |
+
+### JINXED-only key moments
+
+| Key moment | Event period | Chapter link | Depicted event |
+| --- | --- | --- | --- |
+| The slowing approach | Recovered observations, December 2177 | Chapter 1 | The Moon nears Earth while its inward motion slows; the cause is unresolved. |
+| The breaking Moon | Recovered observations, December 21, 2177 | Chapter 1 | Unequal lunar fragments separate into Earth-impacting paths and surviving bound orbital paths. |
+| A ring around Earth | Earth observations, 2181-2182 | Chapter 2 | The debris spreads into an uneven ring while two refuges measure its structure and hazards. |
+
+These moments are presented as three original, locally hosted **12-second videos**, with playback and seeking controls, posters, captions, replay, and links into the matching JINXED chapter. They do not autoplay. They are stylized fictional reconstructions, not to-scale orbital simulations or external scientific evidence.
+
+### JINXED-only references
+
+| Record | Chapter | What it establishes |
+| --- | --- | --- |
+| Observation record 01 / The final approach | Chapter 1 | Three recovered stations record decreasing inward speed. The unexplained slowing is part of the fiction, not a claim that gravity naturally brakes an approaching moon to a stop. |
+| Observation record 02 / Fragment paths | Chapter 1 | Deformation and existing fractures accompany breakup; impacts devastate the surface while other debris stays in orbit. Earth itself does not split apart. |
+| Observation record 03 / Ring survey | Chapter 2 | The ring develops over years after the 2177 breakup. There is no second intact Moon approaching after 2180. |
+| Field record / The people below | Chapter 2 | Mira, Tomas, and Neri belong to the Earth-refuge account; their work and observations are not imported from an off-world storyline. |
+
+**Separation rule:** Display only these JINXED moments and references on the JINXED page. Do not include the original JINX key moments, REDO/REDOVERSE references, Rak/Theo previews, or the original archive's charts and character panels. SOT remains a combined editorial reference; its other sections are not JINXED page content.
+
+### Reading and visual presentation
+
+- The two chapters use the same animated book-opening and 3D page-turn experience as JINX, but with a dedicated **JINXED** cover, chapter list, and reading record.
+- Both complete chapters are available in **English, Telugu, Hindi, and Spanish**. English comes from the story module; the translated editions are [Telugu](assets/books/jinxed-te.json), [Hindi](assets/books/jinxed-hi.json), and [Spanish](assets/books/jinxed-es.json). Translations are AI-assisted drafts requiring fluent editorial review before commercial publication.
+- Chapter cards and the new moment/reference links open the corresponding JINXED chapter. The reader supports text sizing, keyboard page turns, touch swipes, full-screen viewing, and reduced-motion behavior.
+- JINXED progress and language preferences are separate from JINX's. The existing JINX chapters, translations, EPUBs, and PDFs remain unchanged; the JINXED reader does not link to those original downloads.
+- The hero depicts an **Earth-like blue planet** with green continents, polar ice, moving clouds, and rotating lunar-debris rings. Separate front/back ring layers preserve the depth of the image.
+- **Pause rotation** stops the hero motion. Reduced-motion users initially receive a still image and can explicitly choose **Play rotation**.
+- The hero is an illustrative Earth-and-ring view, not evidence that the damaged atmosphere, oceans, or surface have recovered.
+
+### Continuity boundaries and unresolved questions
+
+- JINX still covers 2165-2180 and retains all eight original narrative units. JINXED's later Earth observations extend the story without rewriting those files.
+- The lunar breakup and fragment strikes remain dated **December 21, 2177**. Recovering those records in 2181 does not move the event into the sequel's present.
+- Reduced inward speed does not mean that all motion stops, that the Moon reaches a safe orbit intact, or that impacts are avoided.
+- Distinguish the fragments that hit Earth from those that remain in orbit; the ring forms from the latter.
+- Do not assign an unestablished braking mechanism, exact orbital parameters, ring lifetime, complete survivor census, or date on which Earth becomes safe.
+- Do not use the continuation to confirm Earth-side Egon's survival or death, relocate the originals off-world, or advance the separate Rak/Theo conflict.
+- Keep the eight-row JINX charts in Sections 15-16 unchanged. No numerical emotion or intensity ratings have been assigned to JINXED in this update.
