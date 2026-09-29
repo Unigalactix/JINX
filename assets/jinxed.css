@@ -1,0 +1,57 @@
+.archive-code-dialog { width: min(440px, calc(100% - 32px)); max-height: calc(100svh - 32px); overflow: auto; padding: 32px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.archive-code-dialog::backdrop { background: #050909d9; backdrop-filter: blur(8px); }
+.archive-code-dialog h2 { font-size: 2rem; }
+.archive-code-dialog label { display: block; margin-bottom: 8px; }
+.archive-code-dialog input { display: block; width: 100%; min-height: 48px; padding: 10px; background: var(--panel); color: var(--ink); border: 1px solid var(--sage); border-radius: 0; }
+.archive-code-dialog [role="alert"] { min-height: 1.65em; margin-block: 12px; color: var(--accent); font-size: .85rem; }
+.code-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.jinxed-page { --sage: #c6d3c3; --accent: #d5b88a; --accent-strong: #d5b88a; }
+.jinxed-page h1 { font-size: clamp(3.2rem, 9.7vw, 9rem); margin-left: -4px; }
+.jinxed-page .site-header { gap: 24px; }
+.jinxed-page .site-header .primary-nav { display: flex; }
+.jinxed-page .site-notice { margin-block: 24px; }
+#sealed-archive .text-link { margin-left: 20px; }
+#retry-archive { display: block; margin: 24px auto; }
+.jinxed-hero { min-height: 630px; display: grid; grid-template-columns: 1.35fr 1fr; align-items: center; gap: 24px; padding-block: 90px; }
+.jinxed-intro { max-width: 430px; color: var(--muted); }
+.ring-world { position: relative; aspect-ratio: 1; width: 100%; isolation: isolate; }
+.ring-earth { position: absolute; inset: 21%; border-radius: 50%; overflow: hidden; background: #155681; box-shadow: -5px -4px 18px #7dcee33b, 0 0 48px #568ca31a; }
+.earth-surface, .earth-clouds, .earth-shade { position: absolute; inset: 0; border-radius: 50%; }
+.earth-surface { background: url("./earth-map.svg") repeat-x; background-size: 200% 100%; animation: jinxed-earth-spin 75s linear infinite; }
+.earth-clouds { opacity: .62; background-image: radial-gradient(ellipse at 23% 22%, #fff0 0 6%, #f4ffffb3 7% 9%, #fff0 11%), radial-gradient(ellipse at 57% 64%, #fff0 0 7%, #e8f8ffc7 8% 10%, #fff0 12%), radial-gradient(ellipse at 79% 38%, #ffffffba 0 3%, #fff0 9%), radial-gradient(ellipse at 36% 78%, #f0faffaa 0 2%, #fff0 7%); background-size: 200% 100%; animation: jinxed-earth-spin 59s linear infinite reverse; filter: blur(1px); }
+.earth-shade { background: radial-gradient(circle at 29% 24%, #ddf9ff38, transparent 36%, #000b 76%, #01060fee 100%), linear-gradient(110deg, transparent 27%, #0610191a 44%, #030813d9 86%); box-shadow: inset 2px 2px 3px #d8f7fbb3, inset -7px -5px 19px #000a; }
+.hero-orbits { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hero-orbits-front { z-index: 1; pointer-events: none; }
+.ring-spin { transform-origin: 0 0; animation: jinxed-ring-spin 42s linear infinite; }
+.ring-world.is-paused .earth-surface, .ring-world.is-paused .earth-clouds, .ring-world.is-paused .ring-spin { animation-play-state: paused !important; }
+.hero-motion-control { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px; }
+.hero-motion-control .text-link { font-size: .7rem; min-height: 44px; }
+@keyframes jinxed-earth-spin { from { background-position: 36% 0; } to { background-position: 236% 0; } }
+@keyframes jinxed-ring-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.jinxed-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.jinxed-chapters .chapter-card { min-height: 230px; text-align: left; padding: 30px; border: 1px solid var(--line); }
+.jinxed-chapters .chapter-card h3 { margin-block: 16px; }
+.jinxed-moments { background: #151b1d; border-block: 1px solid var(--line); }
+.jinxed-references { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 36px; }
+.jinxed-reference { padding: 28px; border: 1px solid var(--line); }
+.jinxed-reference h3 { font-size: 1.2rem; }
+.jinxed-reference p { color: var(--muted); }
+.jinxed-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-block: 32px; border-top: 1px solid var(--line); font: .7rem/1.6 var(--mono); color: var(--muted); }
+@media (max-width: 900px) {
+  .jinxed-page .site-header { height: auto; min-height: 88px; flex-wrap: wrap; padding: 18px 24px; gap: 20px; }
+  .jinxed-page .primary-nav { position: static; order: 3; width: 100%; margin: 0; padding: 0; border: 0; background: none; flex-direction: row; gap: 24px; }
+  .jinxed-page #lock-archive { margin-left: auto; }
+  .jinxed-hero { grid-template-columns: 1fr; padding-block: 60px 0; }
+  .ring-world { width: min(380px, 100%); margin-inline: auto; }
+}
+@media (max-width: 600px) {
+  .jinxed-chapters, .jinxed-references { grid-template-columns: 1fr; }
+  .jinxed-page .section-space { padding-block: 64px; }
+  .archive-code-dialog { padding: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jinxed-page { scroll-behavior: auto; }
+  .jinxed-page .earth-surface { animation: jinxed-earth-spin 75s linear infinite !important; }
+  .jinxed-page .earth-clouds { animation: jinxed-earth-spin 59s linear infinite reverse !important; }
+  .jinxed-page .ring-spin { animation: jinxed-ring-spin 42s linear infinite !important; }
+}

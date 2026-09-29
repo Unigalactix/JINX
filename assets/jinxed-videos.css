@@ -1,0 +1,94 @@
+.jinxed-video-experience {
+  --film-gold: #f2ce8f;
+  --film-edge: #425361;
+  color: #edf1f4;
+  background: #101820;
+  border: 1px solid var(--film-edge);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  max-width: 72rem;
+  margin-inline: auto;
+}
+.jinxed-video-experience .jinxed-video-kicker {
+  color: var(--film-gold);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .8rem;
+  margin-top: 0;
+}
+.jinxed-video-experience .jinxed-video-note {
+  color: #c0cbd3;
+  line-height: 1.65;
+  font-size: .875rem;
+}
+.jinxed-video-experience .jinxed-video-scenes,
+.jinxed-video-experience .jinxed-video-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  margin-block: 1rem;
+}
+.jinxed-video-experience button,
+.jinxed-video-experience .jinxed-video-download {
+  font: inherit;
+  color: #edf1f4;
+  border: 1px solid var(--film-edge);
+  border-radius: .5rem;
+  padding: .8rem 1rem;
+  min-height: 44px;
+  background: #1b2833;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.45;
+}
+.jinxed-video-experience .jinxed-video-scene {
+  flex: 1 1 13rem;
+}
+.jinxed-video-experience .jinxed-video-scene[aria-pressed="true"] {
+  color: #111820;
+  background: var(--film-gold);
+  border-color: var(--film-gold);
+}
+.jinxed-video-experience button:hover,
+.jinxed-video-experience .jinxed-video-download:hover {
+  border-color: var(--film-gold);
+}
+.jinxed-video-experience :focus-visible {
+  outline: 3px solid #a6d9ff;
+  outline-offset: 4px;
+}
+.jinxed-video-experience .jinxed-video-figure {
+  margin: 0;
+}
+.jinxed-video-experience .jinxed-video-player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #060b12;
+  border-radius: .65rem;
+}
+.jinxed-video-experience .jinxed-video-period {
+  color: var(--film-gold);
+  font-size: .8rem;
+  margin-block: 1.2rem .5rem;
+}
+.jinxed-video-experience .jinxed-video-title {
+  margin-block: .5rem;
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+}
+.jinxed-video-experience .jinxed-video-description {
+  max-width: 72ch;
+  line-height: 1.7;
+}
+.jinxed-video-experience .jinxed-video-status:empty {
+  display: none;
+}
+@media (max-width: 480px) {
+  .jinxed-video-experience .jinxed-video-scenes {
+    display: grid;
+  }
+  .jinxed-video-experience .jinxed-video-actions > * {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

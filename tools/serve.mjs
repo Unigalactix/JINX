@@ -4,8 +4,8 @@ import { resolve, relative, isAbsolute, extname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const mime = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".txt": "text/plain", ".md": "text/plain", ".json": "application/json", ".pdf": "application/pdf", ".epub": "application/epub+zip", ".woff": "font/woff", ".woff2": "font/woff2", ".ttf": "font/ttf" };
-const binary = new Set([".png", ".pdf", ".epub", ".woff", ".woff2", ".ttf"]);
+const mime = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".txt": "text/plain", ".md": "text/plain", ".json": "application/json", ".pdf": "application/pdf", ".epub": "application/epub+zip", ".woff": "font/woff", ".woff2": "font/woff2", ".ttf": "font/ttf", ".webm": "video/webm", ".vtt": "text/vtt" };
+const binary = new Set([".png", ".pdf", ".epub", ".woff", ".woff2", ".ttf", ".webm"]);
 
 export function createPreviewServer(basePath = "/") {
   if (!/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(basePath)) throw new Error("The base path must be / or a path such as /JINX/.");
@@ -24,7 +24,7 @@ export function createPreviewServer(basePath = "/") {
     if (pathname === "/" && basePath !== "/") return send(302, "Open the project path.", { Location: basePath });
     if (!pathname.startsWith(basePath)) return send(404, "Not found.");
     const path = pathname.slice(basePath.length) || "index.html";
-    if (!(path === "index.html" || path === "SOT.md" || /^assets\/[^/]+\.(?:js|css|svg|png)$/.test(path) || /^assets\/books\/(?:en|te|hi|es)\.json$/.test(path) || /^assets\/books\/jinx-(?:en|te|hi|es)\.(?:pdf|epub)$/.test(path) || /^assets\/fonts\/[A-Za-z0-9_.-]+\.(?:woff2?|ttf|txt)$/.test(path) || /^Story\/[^/]+\/[^/]+\.txt$/.test(path))) {
+    if (!(path === "index.html" || path === "jinxed.html" || path === "SOT.md" || /^assets\/[^/]+\.(?:js|css|svg|png)$/.test(path) || /^assets\/books\/(?:en|te|hi|es|jinxed-te|jinxed-hi|jinxed-es)\.json$/.test(path) || /^assets\/books\/jinx-(?:en|te|hi|es)\.(?:pdf|epub)$/.test(path) || /^assets\/jinxed-videos\/(?:approach|breakup|ring)\.(?:webm|vtt|svg|png)$/.test(path) || /^assets\/fonts\/[A-Za-z0-9_.-]+\.(?:woff2?|ttf|txt)$/.test(path) || /^Story\/[^/]+\/[^/]+\.txt$/.test(path))) {
       return send(404, "Not found.");
     }
     const fullPath = resolve(root, path);
@@ -32,12 +32,35 @@ export function createPreviewServer(basePath = "/") {
     if (localPath.startsWith("..") || isAbsolute(localPath)) return send(403, "Forbidden.");
     try {
       const content = await readFile(fullPath);
-      response.writeHead(200, {
+      const headers = {
         "Content-Type": mime[extname(path)] + (binary.has(extname(path)) ? "" : "; charset=utf-8"),
         "Content-Length": content.length,
         "X-Content-Type-Options": "nosniff",
         "Cache-Control": "no-store",
-      });
+      };
+      if (extname(path) === ".webm") {
+        headers["Accept-Ranges"] = "bytes";
+        if (request.method === "GET" && request.headers.range) {
+          const range = /^bytes=(\d*)-(\d*)$/.exec(request.headers.range);
+          let start = range?.[1] ? Number(range[1]) : 0;
+          let end = range?.[2] ? Number(range[2]) : content.length - 1;
+          if (range && !range[1] && range[2]) {
+            start = Math.max(0, content.length - end);
+            end = content.length - 1;
+          }
+          if (!range || (!range[1] && !range[2]) || !Number.isSafeInteger(start) || !Number.isSafeInteger(end) ||
+              start > end || start >= content.length) {
+            return send(416, "Requested range is not available.", { "Content-Range": `bytes */${content.length}` });
+          }
+          end = Math.min(end, content.length - 1);
+          response.writeHead(206, {
+            ...headers, "Content-Length": end - start + 1, "Content-Range": `bytes ${start}-${end}/${content.length}`,
+          });
+          response.end(content.subarray(start, end + 1));
+          return;
+        }
+      }
+      response.writeHead(200, headers);
       response.end(request.method === "HEAD" ? undefined : content);
     } catch (error) {
       if (["ENOENT", "ENOTDIR"].includes(error.code)) return send(404, "Not found.");

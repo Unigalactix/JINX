@@ -14,13 +14,13 @@ const viewLabels = {
   es: { enter: "Pantalla completa", exit: "Salir de pantalla completa", fallback: "La vista de página completa está activa. El modo de pantalla completa no está disponible aquí.", exitError: "No se pudo salir de la pantalla completa. Reintenta o pulsa Escape en el navegador." },
 };
 
-export function validateEdition(value, language, originals) {
-  if (!Object.hasOwn(bookLanguages, language) || !value || value.language !== language || value.title !== "JINX" ||
-      typeof value.subtitle !== "string" || !value.subtitle.trim() || !Array.isArray(value.chapters) || value.chapters.length !== chapters.length) {
+export function validateEdition(value, language, originals, { chapterMetadata = chapters, title = "JINX" } = {}) {
+  if (!Object.hasOwn(bookLanguages, language) || !value || value.language !== language || value.title !== title ||
+      typeof value.subtitle !== "string" || !value.subtitle.trim() || !Array.isArray(value.chapters) || value.chapters.length !== chapterMetadata.length) {
     throw new Error(`Invalid ${language} book edition.`);
   }
   value.chapters.forEach((chapter, index) => {
-    if (!chapter || chapter.id !== chapters[index].id || typeof chapter.title !== "string" || !chapter.title.trim() ||
+    if (!chapter || chapter.id !== chapterMetadata[index].id || typeof chapter.title !== "string" || !chapter.title.trim() ||
         typeof chapter.subtitle !== "string" || !Array.isArray(chapter.blocks) || chapter.blocks.length < 2) {
       throw new Error(`Invalid chapter ${index + 1} in the ${language} edition.`);
     }
@@ -79,13 +79,20 @@ async function loadEdition(language, signal) {
   return edition;
 }
 
-export function createBookReader(callbacks) {
-  return new BookReader(callbacks);
+export function createBookReader(callbacks, options = {}) {
+  return new BookReader(callbacks, options);
 }
 
 class BookReader {
-  constructor(callbacks) {
+  constructor(callbacks, options) {
     this.callbacks = callbacks;
+    this.chapters = options.chapters ?? chapters;
+    this.loadEdition = options.loadEdition ?? loadEdition;
+    this.title = options.title ?? "JINX";
+    this.cover = options.cover ?? { path: "assets/jinx-book-cover.png", alt: "JINX - A Rajesh Kodaganti's Migration" };
+    this.advisory = options.advisory;
+    this.downloads = options.downloads ?? true;
+    this.languageStorageKey = options.languageStorageKey ?? "jinx-book-language";
     this.$ = (id) => document.getElementById(id);
     this.dialog = this.$("reader");
     this.viewport = this.$("reader-viewport");
@@ -109,10 +116,10 @@ class BookReader {
     this.fullscreenBusy = false;
     this.viewNotice = null;
     try {
-      const saved = localStorage.getItem("jinx-book-language");
+      const saved = localStorage.getItem(this.languageStorageKey);
       if (saved !== null && !Object.hasOwn(bookLanguages, saved)) {
         callbacks.onError("The saved book language was invalid and has been reset to English.");
-        localStorage.removeItem("jinx-book-language");
+        localStorage.removeItem(this.languageStorageKey);
       } else if (saved) this.language = saved;
     } catch (error) { this.storageError(error); }
     this.$("book-language").value = this.language;
@@ -135,7 +142,7 @@ class BookReader {
     this.$("book-language").addEventListener("change", () => {
       const anchor = this.anchor();
       this.language = this.$("book-language").value;
-      try { if (this.storageAvailable) localStorage.setItem("jinx-book-language", this.language); }
+      try { if (this.storageAvailable) localStorage.setItem(this.languageStorageKey, this.language); }
       catch (error) { this.storageError(error); }
       this.prepare({ cover: this.pageIndex < 0, anchor, animate: true });
     });
@@ -266,22 +273,22 @@ class BookReader {
     this.$("book-language-label").textContent = t.language;
     this.$("book-chapter-label").textContent = t.chapter;
     this.$("book-cover").textContent = t.back;
-    this.$("reader-advisory").textContent = t.advisory;
+    this.$("reader-advisory").textContent = this.advisory?.[this.language] ?? t.advisory;
     this.$("close-reader").setAttribute("aria-label", t.close);
     this.$("chapter-source").textContent = `${t.source} ↗`;
-    for (const format of ["epub", "pdf"]) {
+    for (const format of this.downloads ? ["epub", "pdf"] : []) {
       const link = this.$(`download-${format}`);
       link.href = new URL(`assets/books/jinx-${this.language}.${format}`, document.baseURI).href;
       link.download = `JINX-${this.language}.${format}`;
       link.setAttribute("aria-label", `${format.toUpperCase()} · ${t.name}`);
     }
-    this.$("reader-title").textContent = this.edition?.language === this.language ? this.edition.subtitle : "JINX";
+    this.$("reader-title").textContent = this.edition?.language === this.language ? this.edition.subtitle : this.title;
     this.refreshProgress();
     this.syncViewControls();
   }
 
   open({ chapterIndex = 0, cover = true } = {}) {
-    if (!Number.isInteger(chapterIndex) || chapterIndex < 0 || chapterIndex >= chapters.length) throw new RangeError("Invalid chapter index.");
+    if (!Number.isInteger(chapterIndex) || chapterIndex < 0 || chapterIndex >= this.chapters.length) throw new RangeError("Invalid chapter index.");
     this.chapterIndex = chapterIndex;
     this.pageIndex = cover ? -1 : 0;
     if (!this.dialog.open) {
@@ -324,7 +331,7 @@ class BookReader {
     if (cover) this.drawCover(this.surface);
     else this.surface.replaceChildren();
     try {
-      const edition = await loadEdition(this.language, this.controller.signal);
+      const edition = await this.loadEdition(this.language, this.controller.signal);
       const family = { te: "Jinx Telugu", hi: "Jinx Devanagari" }[this.language];
       if (family) {
         const fonts = await document.fonts.load(`${this.size}px "${family}"`, this.text.name);
@@ -335,14 +342,14 @@ class BookReader {
       this.labels();
       this.$("reader-chapter").replaceChildren(...[
         { value: -1, title: this.text.cover },
-        ...edition.chapters.map((chapter, index) => ({ value: index, title: `${chapters[index].number} · ${chapter.title}` })),
+        ...edition.chapters.map((chapter, index) => ({ value: index, title: `${this.chapters[index].number} · ${chapter.title}` })),
       ].map(({ value, title }) => { const option = node("option", "", title); option.value = String(value); return option; }));
       this.$("reader-state").replaceChildren();
       this.paginate();
       let target = 0;
       if (anchor) target = pageForAnchor(this.pages, anchor);
       else if (restore) {
-        const ratio = this.callbacks.getProgress().positions[chapters[this.chapterIndex].id] ?? 0;
+        const ratio = this.callbacks.getProgress().positions[this.chapters[this.chapterIndex].id] ?? 0;
         target = Math.min(this.pages.length - 1, Math.round(ratio * Math.max(0, this.pages.length - 1)));
       }
       this.resumePage = target;
@@ -482,8 +489,8 @@ class BookReader {
     button.setAttribute("aria-label", this.text.open);
     button.disabled = !this.ready || this.turning;
     const image = node("img");
-    image.src = new URL("assets/jinx-book-cover.png", document.baseURI).href;
-    image.alt = "JINX - A Rajesh Kodaganti's Migration";
+    image.src = new URL(this.cover.path, document.baseURI).href;
+    image.alt = this.cover.alt;
     image.width = 1600;
     image.height = 2400;
     button.append(image);
@@ -495,17 +502,19 @@ class BookReader {
     if (index < 0) { this.drawCover(surface); return; }
     surface.classList.remove("cover-page");
     const chapter = this.edition.chapters[this.chapterIndex];
-    const running = node("div", "book-running-title", `JINX / ${chapter.title}`);
+    const running = node("div", "book-running-title", `${this.title} / ${chapter.title}`);
     const folio = node("div", "book-folio");
-    folio.append(node("span", "", chapters[this.chapterIndex].number), node("span", "", `${index + 1} / ${this.pages.length}`));
+    folio.append(node("span", "", this.chapters[this.chapterIndex].number), node("span", "", `${index + 1} / ${this.pages.length}`));
     surface.replaceChildren(running, this.makeText(this.pages[index]), folio);
   }
 
   render() {
     this.drawPage(this.surface, this.pageIndex);
     this.$("reader-chapter").value = String(this.pageIndex < 0 ? -1 : this.chapterIndex);
-    this.$("reader-number").textContent = this.pageIndex < 0 ? `JINX / ${this.text.name}` : `${chapters[this.chapterIndex].number} / ${this.edition.chapters[this.chapterIndex].title}`;
-    this.$("chapter-source").href = new URL(chapters[this.chapterIndex].path, document.baseURI).href;
+    this.$("reader-number").textContent = this.pageIndex < 0 ? `${this.title} / ${this.text.name}` : `${this.chapters[this.chapterIndex].number} / ${this.edition.chapters[this.chapterIndex].title}`;
+    const sourcePath = this.chapters[this.chapterIndex].path;
+    this.$("chapter-source").hidden = !sourcePath;
+    if (sourcePath) this.$("chapter-source").href = new URL(sourcePath, document.baseURI).href;
     if (this.pageIndex >= 0) {
       this.callbacks.onPosition(this.chapterIndex, this.pages.length > 1 ? this.pageIndex / (this.pages.length - 1) : 0);
     }
@@ -513,14 +522,14 @@ class BookReader {
   }
 
   refreshProgress() {
-    const read = this.callbacks.getProgress().read.includes(chapters[this.chapterIndex].id);
+    const read = this.callbacks.getProgress().read.includes(this.chapters[this.chapterIndex].id);
     this.$("mark-read").textContent = read ? `${this.text.marked} ✓` : this.text.mark;
   }
 
   updateControls() {
     this.syncViewControls();
     const busy = !this.ready || this.turning;
-    const last = this.chapterIndex === chapters.length - 1 && this.pageIndex === this.pages.length - 1;
+    const last = this.chapterIndex === this.chapters.length - 1 && this.pageIndex === this.pages.length - 1;
     this.$("previous-page").disabled = busy || this.pageIndex < 0;
     this.$("next-page").disabled = busy || last;
     this.$("previous-page").textContent = `← ${this.text.previous}`;
@@ -586,7 +595,7 @@ class BookReader {
   }
 
   async changeChapter(index, { end = false, direction = 1 } = {}) {
-    if (!this.ready || this.turning || !Number.isInteger(index) || index < 0 || index >= chapters.length) return;
+    if (!this.ready || this.turning || !Number.isInteger(index) || index < 0 || index >= this.chapters.length) return;
     const outgoing = this.surface.cloneNode(true);
     this.chapterIndex = index;
     try {
@@ -603,7 +612,7 @@ class BookReader {
       if (this.chapterIndex > 0) this.changeChapter(this.chapterIndex - 1, { end: true, direction: -1 });
       else this.goToCover();
     } else if (target >= this.pages.length) {
-      if (this.chapterIndex < chapters.length - 1) this.changeChapter(this.chapterIndex + 1);
+      if (this.chapterIndex < this.chapters.length - 1) this.changeChapter(this.chapterIndex + 1);
     } else this.turnTo(target, direction);
   }
 

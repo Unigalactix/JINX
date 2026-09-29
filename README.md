@@ -27,11 +27,33 @@ The site is designed for **https://unigalactix.github.io/JINX/**.
 4. Select **main** and **/ (root)**, then **Save**.
 5. Wait for the Pages deployment to finish and open the URL shown in Settings.
 
-Keep [index.html](index.html), [assets](assets), [Story](Story), [SOT.md](SOT.md), and [.nojekyll](.nojekyll) at their current paths. The empty `.nojekyll` file bypasses Jekyll so that the Markdown reference remains available at its original URL.
+Keep [index.html](index.html), [jinxed.html](jinxed.html), [assets](assets), [Story](Story), [SOT.md](SOT.md), and [.nojekyll](.nojekyll) at their current paths. The empty `.nojekyll` file bypasses Jekyll so that the Markdown reference remains available at its original URL.
 
 All production asset and content URLs are relative. The site works under `/JINX/` as well as at a domain root; no custom domain or Actions workflow is required.
 
 **Publication note:** deploying this repository publishes the story and its full reference, including spoilers. The spoiler switch is a reading preference, not access control. Do not add private notes, credentials, or material you do not intend to publish.
+
+## Hidden JINXED archive
+
+Double-click the **JINX** wordmark in the main navbar and enter the exact, case-sensitive code `JINXED`. On touch screens, double-tap the wordmark; with a keyboard, focus it and press **Shift+Enter**. A single click still goes home. Cancel or Escape closes the code dialog without unlocking anything.
+
+The separate [JINXED page](jinxed.html) contains **Chapter 1** and **Chapter 2**, three playable key-moment videos (approach, breakup, and ring), and references only for those two chapters. It does not load the main archive's book editions, REDO preview, characters, or key moments. The chapter text and accompanying notes live in [jinxed-content.js](assets/jinxed-content.js).
+
+The new narrative follows Earth's survivors in **2181-2182**. Recovered observations revisit the **December 2177** approach: the Moon's inward motion slows for an explicitly unresolved fictional reason, it fragments, and the debris that remains in orbit develops into a ring. This does not introduce a second intact Moon after the existing ending or rewrite the eight original chapters.
+
+**Animated book:** **Open the book** opens a dedicated JINXED cover. The reader reuses the original 3D cover/page-turn engine, with chapter selection, arrow keys, touch swipes, adjustable text size, full-screen mode, and reduced-motion support. Chapter cards and video/reference reading links enter the selected chapter. JINXED reading progress and language use separate storage keys; the original book's progress is untouched.
+
+Both complete chapters are available in **English, Telugu, Hindi, and Spanish** through the reader's language selector. English comes from the JINXED story module; the other editions are [jinxed-te.json](assets/books/jinxed-te.json), [jinxed-hi.json](assets/books/jinxed-hi.json), and [jinxed-es.json](assets/books/jinxed-es.json). These are AI-assisted translations and should receive fluent editorial review before commercial publication. JINXED does not link to the original book's EPUB/PDF files, and those downloads remain unchanged.
+
+**Animated Earth:** the hero has blue oceans, green continents, polar ice, independently moving clouds, and rotating lunar-debris rings with separate front/back layers. **Pause rotation** stops all hero movement. Reduced-motion users start with a still image and may explicitly choose **Play rotation**. Hidden tabs pause the animation.
+
+**Key-moment videos:** three original 12-second, 960 x 540 VP9/WebM films feature the slowing approach, lunar breakup, and the resulting ring. The player has native playback/seek controls, posters, captions, scene selection, replay, and direct chapter entry. Nothing autoplays. Playback pauses when the book opens, the video leaves view, or the page is hidden; relocking unloads it. Videos are stored locally in [assets/jinxed-videos](assets/jinxed-videos), not embedded from a third-party service.
+
+Regenerate the films, posters, and captions with `npm run build:jinxed-videos`. The [generator](tools/build-jinxed-videos.mjs) uses the existing Playwright/Chromium dependency with Canvas and WebCodecs; no ffmpeg, additional packages, or external media are needed. The preview server supports byte-range requests for native seeking.
+
+Unlocking lasts for the current tab's session, including refreshes. **Lock & leave** clears it and returns to the main archive. Opening the page without an unlock shows only a sealed archive; the story module is requested after unlocking. Session storage and JavaScript must be available.
+
+This is an Easter egg, **not authentication**: the code and story assets are public on static hosting. Do not place confidential content behind it.
 
 ## Book cover
 
