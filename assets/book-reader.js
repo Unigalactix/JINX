@@ -1,4 +1,5 @@
 import { chapters, parseChapter } from "./content.js";
+import { applyTeluguDialect, teluguDialects } from "./telugu-dialects.js";
 
 export const bookLanguages = {
   en: { name: "English", language: "Language", chapter: "Chapter", cover: "Cover", open: "Open book", previous: "Previous page", next: "Next page", back: "Back to cover", mark: "Mark chapter read", marked: "Chapter marked read", page: "Page", of: "of", loading: "Preparing the book…", retry: "Try again", end: "End of book", advisory: "Unabridged story · Spoilers, graphic violence, blood, mass death, and grief.", error: "The book could not be opened.", source: "English source", close: "Close book" },
@@ -93,6 +94,8 @@ class BookReader {
     this.advisory = options.advisory;
     this.downloads = options.downloads ?? true;
     this.languageStorageKey = options.languageStorageKey ?? "jinx-book-language";
+    this.dialectStorageKey = options.dialectStorageKey ?? "jinx-book-dialect";
+    this.dialectPath = options.dialectPath ?? "assets/books/te-dialects.json";
     this.$ = (id) => document.getElementById(id);
     this.dialog = this.$("reader");
     this.viewport = this.$("reader-viewport");
@@ -100,6 +103,7 @@ class BookReader {
     this.surface = this.$("book-page");
     this.measure = this.$("book-measure");
     this.language = "en";
+    this.dialect = "standard";
     this.chapterIndex = 0;
     this.pageIndex = -1;
     this.pages = [];
@@ -122,6 +126,35 @@ class BookReader {
         localStorage.removeItem(this.languageStorageKey);
       } else if (saved) this.language = saved;
     } catch (error) { this.storageError(error); }
+    try {
+      const saved = localStorage.getItem(this.dialectStorageKey);
+      if (saved !== null && !Object.hasOwn(teluguDialects, saved)) {
+        callbacks.onError("The saved Telugu dialect was invalid and has been reset to Standard Telugu.");
+        localStorage.removeItem(this.dialectStorageKey);
+      } else if (saved) this.dialect = saved;
+    } catch (error) { this.storageError(error); }
+    const dialectLabel = node("label", "book-dialect-label");
+    dialectLabel.id = "book-dialect-control";
+    dialectLabel.append(node("span", "", "తెలుగు యాస"));
+    const dialectSelect = node("select");
+    dialectSelect.id = "book-dialect";
+    dialectSelect.setAttribute("aria-label", "Telugu dialect / తెలుగు యాస");
+    for (const [value, name] of Object.entries(teluguDialects)) {
+      const option = node("option", "", name);
+      option.value = value;
+      option.lang = "te";
+      dialectSelect.append(option);
+    }
+    dialectLabel.append(dialectSelect);
+    this.$("book-language").closest("label").after(dialectLabel);
+    dialectSelect.value = this.dialect;
+    dialectSelect.addEventListener("change", () => {
+      const anchor = this.anchor();
+      this.dialect = dialectSelect.value;
+      try { if (this.storageAvailable) localStorage.setItem(this.dialectStorageKey, this.dialect); }
+      catch (error) { this.storageError(error); }
+      this.prepare({ cover: this.pageIndex < 0, anchor, animate: true });
+    });
     this.$("book-language").value = this.language;
     this.$("close-reader").addEventListener("click", () => this.close());
     this.dialog.addEventListener("cancel", (event) => { event.preventDefault(); this.escape(); });
@@ -263,17 +296,24 @@ class BookReader {
   storageError(error) {
     if (!(error instanceof DOMException) || !["SecurityError", "QuotaExceededError", "NS_ERROR_DOM_QUOTA_REACHED"].includes(error.name)) throw error;
     this.storageAvailable = false;
-    this.callbacks.onError("This browser cannot save your book language. Your selection will last for this page session.");
+    this.callbacks.onError("This browser cannot save your book language or Telugu dialect. Your selection will last for this page session.");
   }
 
   labels() {
     const t = this.text;
     this.dialog.lang = this.language;
     this.book.lang = this.language;
+    this.book.dataset.dialect = this.language === "te" ? this.dialect : "standard";
+    this.$("book-dialect-control").hidden = this.language !== "te";
     this.$("book-language-label").textContent = t.language;
     this.$("book-chapter-label").textContent = t.chapter;
     this.$("book-cover").textContent = t.back;
     this.$("reader-advisory").textContent = this.advisory?.[this.language] ?? t.advisory;
+    const regional = this.language === "te" && this.dialect !== "standard";
+    if (regional) {
+      this.$("reader-advisory").textContent += ` ${teluguDialects[this.dialect]} యాసలో సంభాషణల అనుసరణ; కథనం ప్రామాణిక తెలుగులో ఉంటుంది.`;
+      if (this.downloads) this.$("reader-advisory").textContent += " EPUB/PDF: ప్రామాణిక తెలుగు మాత్రమే.";
+    }
     this.$("close-reader").setAttribute("aria-label", t.close);
     this.$("chapter-source").textContent = `${t.source} ↗`;
     for (const format of this.downloads ? ["epub", "pdf"] : []) {
@@ -281,6 +321,7 @@ class BookReader {
       link.href = new URL(`assets/books/jinx-${this.language}.${format}`, document.baseURI).href;
       link.download = `JINX-${this.language}.${format}`;
       link.setAttribute("aria-label", `${format.toUpperCase()} · ${t.name}`);
+      link.textContent = `${format.toUpperCase()}${regional ? " · ప్రామాణిక తెలుగు" : ""}`;
     }
     this.$("reader-title").textContent = this.edition?.language === this.language ? this.edition.subtitle : this.title;
     this.refreshProgress();
@@ -331,7 +372,18 @@ class BookReader {
     if (cover) this.drawCover(this.surface);
     else this.surface.replaceChildren();
     try {
-      const edition = await this.loadEdition(this.language, this.controller.signal);
+      const language = this.language;
+      const dialect = this.dialect;
+      const signal = this.controller.signal;
+      let edition = await this.loadEdition(language, signal);
+      if (language === "te" && dialect !== "standard") {
+        if (!this.dialectAdaptations) {
+          const response = await responseAt(this.dialectPath, signal);
+          const adaptations = await response.json();
+          edition = applyTeluguDialect(edition, adaptations, dialect);
+          this.dialectAdaptations = adaptations;
+        } else edition = applyTeluguDialect(edition, this.dialectAdaptations, dialect);
+      }
       const family = { te: "Jinx Telugu", hi: "Jinx Devanagari" }[this.language];
       if (family) {
         const fonts = await document.fonts.load(`${this.size}px "${family}"`, this.text.name);
@@ -539,6 +591,7 @@ class BookReader {
     this.$("book-cover").disabled = busy || this.pageIndex < 0;
     this.$("reader-chapter").disabled = busy;
     this.$("book-language").disabled = this.turning;
+    this.$("book-dialect").disabled = this.turning;
     this.$("smaller-text").disabled = busy || this.size <= 15;
     this.$("larger-text").disabled = busy || this.size >= 25;
     const cover = this.surface.querySelector(".book-cover-open");

@@ -8,6 +8,7 @@ A responsive, single-page reading experience for **JINX**, an original dark scie
 
 - Cover-first book reader with animated 3D opening and page turns, chapter navigation, adjustable text size, saved position, and explicit read markers.
 - Complete English, Telugu, Hindi, and Spanish editions, with downloadable EPUB and PDF books using the JINX cover.
+- An additional Telugu dialect selector in both readers: existing Standard Telugu, Telangana, and Rayalaseema.
 - Searchable character explorer, including the distinction between original people, counterparts, AI, and Egon's identities.
 - An interactive five-ship mission map and Earth-reference timeline.
 - Six original animated key moments with scene scrubbing, spoiler protection, and direct chapter entry.
@@ -65,6 +66,12 @@ The standalone book cover reads **JINX - A Rajesh Kodaganti's Migration**. Its 1
 Preview it at **http://127.0.0.1:4173/assets/jinx-book-cover.svg** with the local server running. This is a front-cover design, not a print-ready wraparound jacket with a spine or bleed.
 
 ## Reading and downloading the book
+
+Choose **తెలుగు** in the language menu to reveal **తెలుగు యాస** (Telugu dialect): **ప్రామాణిక తెలుగు** (Standard, the unchanged existing edition), **తెలంగాణ** (Telangana), or **రాయలసీమ** (Rayalaseema). Both regional options retain the complete story and standard literary narration, with authored regional dialogue adaptations across all eight JINX chapters and both JINXED chapters; they are not automatic word substitutions or abridgments. Formal/technical speech may remain standard Telugu. These AI-assisted dialect drafts need review by speakers of the respective regions before publication.
+
+The regional dialogue lives in [JINX adaptations](assets/books/te-dialects.json) and [JINXED adaptations](assets/books/jinxed-te-dialects.json), applied without modifying the original editions by [telugu-dialects.js](assets/telugu-dialects.js). Switching dialect retains the current chapter and paragraph position. Each reader remembers its own dialect, including when temporarily switching to another language. Missing or invalid regional content shows an error with retry, never a silently substituted standard edition.
+
+Dialect adaptations are **reader-only**. Existing Telugu EPUB/PDF downloads still contain Standard Telugu; when a regional dialect is selected, their links and the reader advisory explicitly identify this. JINXED continues to have no download links.
 
 **Begin the story** opens the cover. Click the cover or **Open book** to turn it open; **Next page**, **Previous page**, the left/right arrow keys, Page Up/Page Down, and horizontal touch swipes turn individual pages. The chapter menu jumps to a chapter with the same page-turn animation. **Back to cover** keeps your current reading place.
 
@@ -185,4 +192,4 @@ Missing or malformed source files produce visible errors and retry controls; the
 
 Reading progress is stored only in the visitor's browser under `jinx-reading-v1`. Reset it using **Reset reading progress** in the reading room. If browser storage is unavailable, the site explains that progress is session-only. Plot spoilers start off on each page load.
 
-The book language is stored separately under `jinx-book-language`. Existing chapter scroll-position ratios migrate naturally to page-position ratios; chapter read markers are retained.
+The book language is stored separately under `jinx-book-language`, and the Telugu dialect under `jinx-book-dialect` (default `standard`). JINXED uses `jinxed-book-language` and `jinxed-book-dialect` independently. Existing chapter scroll-position ratios migrate naturally to page-position ratios; chapter read markers are retained.

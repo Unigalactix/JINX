@@ -113,6 +113,8 @@ export function setupJinxedBook(chapters, onError) {
       es: "JINXED / Capítulos 1 y 2 completos / Secuelas del desastre, pérdida y supervivencia incierta. Traducción asistida por IA; pendiente de revisión editorial.",
     },
     languageStorageKey: "jinxed-book-language",
+    dialectStorageKey: "jinxed-book-dialect",
+    dialectPath: "assets/books/jinxed-te-dialects.json",
     downloads: false,
   });
   return reader;

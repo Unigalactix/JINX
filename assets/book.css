@@ -21,6 +21,7 @@
 .reader-toolbar { padding: 10px 24px; gap: 16px; flex-wrap: wrap; }
 .reader-toolbar select { max-width: 185px; }
 .reader-toolbar label { min-width: 0; }
+.reader-toolbar .book-dialect-label[hidden] { display: none; }
 .reader-text-controls { margin-left: auto; }
 .book-downloads { display: flex; gap: 8px; }
 .book-downloads a { padding: 8px 10px; border: 1px solid var(--line); font: .7rem var(--mono); text-decoration: none; }
@@ -71,7 +72,7 @@
   .reader-toolbar { padding: 8px 14px; gap: 8px 12px; }
   .reader-toolbar label { flex: none; min-width: 0; gap: 5px; font-size: .65rem; }
   .reader-toolbar select { width: 120px; max-width: 120px; }
-  .reader-toolbar .book-chapter-label { flex: 1; }
+  .reader-toolbar .book-chapter-label { flex: 1 1 150px; }
   .book-chapter-label select { width: 100%; max-width: 150px; min-width: 70px; }
   .reader-text-controls { margin: 0; }
   .reader-text-controls button { min-height: 30px; min-width: 32px; }

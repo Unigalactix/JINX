@@ -24,7 +24,7 @@ export function createPreviewServer(basePath = "/") {
     if (pathname === "/" && basePath !== "/") return send(302, "Open the project path.", { Location: basePath });
     if (!pathname.startsWith(basePath)) return send(404, "Not found.");
     const path = pathname.slice(basePath.length) || "index.html";
-    if (!(path === "index.html" || path === "jinxed.html" || path === "SOT.md" || /^assets\/[^/]+\.(?:js|css|svg|png)$/.test(path) || /^assets\/books\/(?:en|te|hi|es|jinxed-te|jinxed-hi|jinxed-es)\.json$/.test(path) || /^assets\/books\/jinx-(?:en|te|hi|es)\.(?:pdf|epub)$/.test(path) || /^assets\/jinxed-videos\/(?:approach|breakup|ring)\.(?:webm|vtt|svg|png)$/.test(path) || /^assets\/fonts\/[A-Za-z0-9_.-]+\.(?:woff2?|ttf|txt)$/.test(path) || /^Story\/[^/]+\/[^/]+\.txt$/.test(path))) {
+    if (!(path === "index.html" || path === "jinxed.html" || path === "SOT.md" || /^assets\/[^/]+\.(?:js|css|svg|png)$/.test(path) || /^assets\/books\/(?:en|te|hi|es|jinxed-te|jinxed-hi|jinxed-es|te-dialects|jinxed-te-dialects)\.json$/.test(path) || /^assets\/books\/jinx-(?:en|te|hi|es)\.(?:pdf|epub)$/.test(path) || /^assets\/jinxed-videos\/(?:approach|breakup|ring)\.(?:webm|vtt|svg|png)$/.test(path) || /^assets\/fonts\/[A-Za-z0-9_.-]+\.(?:woff2?|ttf|txt)$/.test(path) || /^Story\/[^/]+\/[^/]+\.txt$/.test(path))) {
       return send(404, "Not found.");
     }
     const fullPath = resolve(root, path);
